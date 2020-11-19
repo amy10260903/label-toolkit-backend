@@ -1,7 +1,9 @@
 from django.core.management.base import BaseCommand, CommandError
 import os, sys
 
-from main.dejavu import fingerprint_directory
+from main.dejavu import fingerprint_directory, recognize
+from main.dejavu.logic.recognizer.file_recognizer import FileRecognizer
+from main.dejavu.logic.recognizer.microphone_recognizer import MicrophoneRecognizer
 
 class Command(BaseCommand):
     help = 'Dejavu: Audio Fingerprinting library'
@@ -24,17 +26,30 @@ class Command(BaseCommand):
                                  '--recognize file path/to/file \n')
 
     def handle(self, *args, **options):
-        fingerprint = options['fingerprint']
-        if fingerprint:
-            if len(fingerprint) == 2:
-                directory = fingerprint[0]
-                extension = fingerprint[1]
+
+        if options['fingerprint']:
+            # Fingerprint all files in a directory
+            if len(options['fingerprint']) == 2:
+                directory = options['fingerprint'][0]
+                extension = options['fingerprint'][1]
                 self.stdout.write(f"Fingerprinting all .{extension} files in the {directory} directory")
                 fingerprint_directory(directory, ["." + extension], 4)
 
-            elif len(fingerprint) == 1:
-                filepath = fingerprint[0]
+            elif len(options['fingerprint']) == 1:
+                filepath = options['fingerprint'][0]
                 if os.path.isdir(filepath):
                     self.stdout.write("Please specify an extension if you'd like to fingerprint a directory!")
                     sys.exit(1)
                 # djv.fingerprint_file(filepath)
+
+        elif options['recognize']:
+            # Recognize audio source
+            songs = None
+            source = options['recognize'][0]
+            opt_arg = options['recognize'][1]
+
+            if source in ('mic', 'microphone'):
+                songs = recognize(MicrophoneRecognizer, seconds=opt_arg)
+            elif source == 'file':
+                songs = recognize(FileRecognizer, opt_arg)
+            print(songs)

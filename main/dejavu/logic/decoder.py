@@ -10,7 +10,7 @@ from pydub.utils import audioop
 from main.dejavu.third_party import wavio
 
 
-def unique_hash(file_path: str, block_size: int = 2**20) -> str:
+def unique_hash(file: str, block_size: int = 2**20) -> str:
     """ Small function to generate a hash to uniquely generate
     a file. Inspired by MD5 version here:
     http://stackoverflow.com/a/1131255/712997
@@ -21,14 +21,18 @@ def unique_hash(file_path: str, block_size: int = 2**20) -> str:
     :param block_size: read block size.
     :return: a hash in an hexagesimal string form.
     """
-    s = sha1()
-    with open(file_path, "rb") as f:
-        while True:
-            buf = f.read(block_size)
-            if not buf:
-                break
-            s.update(buf)
-    return s.hexdigest().upper()
+    # s = sha1()
+    # with open(file_path, "rb") as f:
+    #     while True:
+    #         buf = f.read(block_size)
+    #         if not buf:
+    #             break
+    #         s.update(buf)
+    file.seek(0)
+    file_sha1 = sha1()
+    file_sha1.update(file.read())
+
+    return file_sha1.hexdigest().upper()
 
 
 def find_files(path: str, extensions: List[str]) -> List[Tuple[str, str]]:
