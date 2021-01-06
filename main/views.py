@@ -31,7 +31,7 @@ class FingerprintViewSet(mixins.CreateModelMixin,
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
         file = request.data['file']
-        songs = recognize(FileRecognizer, file)
+        songs = recognize(FileRecognizer, file, request.data['category'])
 
         if songs:
             return Response(songs, status=status.HTTP_200_OK)

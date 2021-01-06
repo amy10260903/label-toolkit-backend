@@ -21,13 +21,13 @@ def unique_hash(file: str, block_size: int = 2**20) -> str:
     :param block_size: read block size.
     :return: a hash in an hexagesimal string form.
     """
-    # s = sha1()
-    # with open(file_path, "rb") as f:
+    # file_sha1 = sha1()
+    # with open(file, "rb") as f:
     #     while True:
     #         buf = f.read(block_size)
     #         if not buf:
     #             break
-    #         s.update(buf)
+    #         file_sha1.update(buf)
     file.seek(0)
     file_sha1 = sha1()
     file_sha1.update(file.read())

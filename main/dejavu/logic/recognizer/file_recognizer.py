@@ -10,12 +10,12 @@ class FileRecognizer(BaseRecognizer):
     def __init__(self):
         super().__init__()
 
-    def recognize_file(self, filename: str) -> Dict[str, any]:
+    def recognize_file(self, filename: str, category: str = 'origin') -> Dict[str, any]:
         limit = None
         channels, self.Fs, _ = decoder.read(filename, limit)
 
         t = time()
-        matches, fingerprint_time, query_time, align_time = self._recognize(*channels)
+        matches, fingerprint_time, query_time, align_time = self._recognize(*channels, category=category)
         t = time() - t
 
         results = {
@@ -28,5 +28,5 @@ class FileRecognizer(BaseRecognizer):
 
         return results
 
-    def recognize(self, filename: str) -> Dict[str, any]:
-        return self.recognize_file(filename)
+    def recognize(self, filename: str, category: str = 'origin') -> Dict[str, any]:
+        return self.recognize_file(filename, category)

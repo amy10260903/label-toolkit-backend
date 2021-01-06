@@ -12,7 +12,7 @@ class BaseRecognizer(object, metaclass=abc.ABCMeta):
     def __init__(self):
         self.Fs = DEFAULT_FS
 
-    def _recognize(self, *data) -> Tuple[List[Dict[str, any]], int, int, int]:
+    def _recognize(self, *data, category) -> Tuple[List[Dict[str, any]], int, int, int]:
         fingerprint_times = []
         hashes = set()  # to remove possible duplicated fingerprints we built a set.
         for channel in data:
@@ -20,10 +20,10 @@ class BaseRecognizer(object, metaclass=abc.ABCMeta):
             fingerprint_times.append(fingerprint_time)
             hashes |= set(fingerprints)
 
-        matches, dedup_hashes, query_time = find_matches(hashes)
+        matches, dedup_hashes, query_time = find_matches(hashes, category)
 
         t = time()
-        final_results = align_matches(matches, dedup_hashes, len(hashes))
+        final_results = align_matches(matches, dedup_hashes, len(hashes), category)
         align_time = time() - t
 
         return final_results, np.sum(fingerprint_times), query_time, align_time

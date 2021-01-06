@@ -18,6 +18,10 @@ class Command(BaseCommand):
                                  'Usages: \n'
                                  '--fingerprint /path/to/directory extension\n'
                                  '--fingerprint /path/to/directory')
+        parser.add_argument('-nr', '--noisereduce', nargs=1,
+                            help='Reduce noise for files\n'
+                                 'Usages: \n'
+                                 '--noisereduce condition(y/n)\n')
         parser.add_argument('-r', '--recognize', nargs=2,
                             help='Recognize what is '
                                  'playing through the microphone or in a file.\n'
@@ -33,7 +37,12 @@ class Command(BaseCommand):
                 directory = options['fingerprint'][0]
                 extension = options['fingerprint'][1]
                 self.stdout.write(f"Fingerprinting all .{extension} files in the {directory} directory")
-                fingerprint_directory(directory, ["." + extension], 4)
+
+                if options['noisereduce']:
+                    nr = True if options['noisereduce'][0]=='y' else False
+                    fingerprint_directory(directory, ["." + extension], 4, nr)
+                else:
+                    fingerprint_directory(directory, ["." + extension], 4)
 
             elif len(options['fingerprint']) == 1:
                 filepath = options['fingerprint'][0]
