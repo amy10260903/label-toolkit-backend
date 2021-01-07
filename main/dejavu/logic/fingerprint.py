@@ -15,7 +15,10 @@ from main.dejavu.config.settings import (CONNECTIVITY_MASK, DEFAULT_AMP_MIN,
                                          DEFAULT_OVERLAP_RATIO, DEFAULT_WINDOW_SIZE,
                                          FINGERPRINT_REDUCTION, MAX_HASH_TIME_DELTA,
                                          MIN_HASH_TIME_DELTA,
-                                         PEAK_NEIGHBORHOOD_SIZE, PEAK_SORT)
+                                         PEAK_NEIGHBORHOOD_SIZE, PEAK_SORT,
+                                         AMP_MIN, FAN_SIZE,
+                                         MIN_FREQ_SPAN, MAX_FREQ_SPAN,
+                                         MIN_TIME_SPAN, MAX_TIME_SPAN)
 
 
 def fingerprint(channel_samples: List[int],
@@ -23,7 +26,7 @@ def fingerprint(channel_samples: List[int],
                 wsize: int = DEFAULT_WINDOW_SIZE,
                 wratio: float = DEFAULT_OVERLAP_RATIO,
                 fan_value: int = DEFAULT_FAN_VALUE,
-                amp_min: int = DEFAULT_AMP_MIN) -> List[Tuple[str, int]]:
+                amp_min: int = AMP_MIN) -> List[Tuple[str, int]]:
     """
     FFT the channel, log transform output, find local maxima, then return locally sensitive hashes.
 
@@ -45,12 +48,10 @@ def fingerprint(channel_samples: List[int],
 
     # Apply log transform since specgram function returns linear array. 0s are excluded to avoid np warning.
     arr2D = 10 * np.log10(arr2D, out=np.zeros_like(arr2D), where=(arr2D != 0))
-
     local_maxima = get_2D_peaks(arr2D, amp_min=amp_min)
-    #local_maxima = get_2D_peaks(arr2D, plot=True, amp_min=amp_min)
 
     # return hashes
-    return generate_hashes(local_maxima, fan_value=fan_value)
+    return generate_hashes(local_maxima, fan_value=FAN_SIZE)
 
 
 def get_2D_peaks(arr2D: np.array, plot: bool = False, amp_min: int = DEFAULT_AMP_MIN)\
@@ -130,28 +131,51 @@ def generate_hashes(peaks: List[Tuple[int, int]], fan_value: int = DEFAULT_FAN_V
     :param fan_value: degree to which a fingerprint can be paired with its neighbors.
     :return: a list of hashes with their corresponding offsets.
     """
-    # frequencies are in the first position of the tuples
-    idx_freq = 0
-    # times are in the second position of the tuples
-    idx_time = 1
+    # # frequencies are in the first position of the tuples
+    # idx_freq = 0
+    # # times are in the second position of the tuples
+    # idx_time = 1
+    #
+    # if PEAK_SORT:
+    #     peaks.sort(key=itemgetter(1))
+    #
+    # hashes = []
+    # for i in range(len(peaks)):
+    #     for j in range(1, fan_value):
+    #         if (i + j) < len(peaks):
+    #
+    #             freq1 = peaks[i][idx_freq]
+    #             freq2 = peaks[i + j][idx_freq]
+    #             t1 = peaks[i][idx_time]
+    #             t2 = peaks[i + j][idx_time]
+    #             t_delta = t2 - t1
+    #
+    #             if MIN_HASH_TIME_DELTA <= t_delta <= MAX_HASH_TIME_DELTA:
+    #                 h = hashlib.sha1(f"{str(freq1)}|{str(freq2)}|{str(t_delta)}".encode('utf-8'))
+    #
+    #                 hashes.append((h.hexdigest()[0:FINGERPRINT_REDUCTION], t1))
 
-    if PEAK_SORT:
-        peaks.sort(key=itemgetter(1))
-
+    peaks.sort(key=itemgetter(1))
+    # idx_freq = 0
+    # idx_time = 1
     hashes = []
     for i in range(len(peaks)):
-        for j in range(1, fan_value):
-            if (i + j) < len(peaks):
+        freq1, t1 = peaks[i]
 
-                freq1 = peaks[i][idx_freq]
-                freq2 = peaks[i + j][idx_freq]
-                t1 = peaks[i][idx_time]
-                t2 = peaks[i + j][idx_time]
+        idx = i + 1
+        hash_cnt = 0
+        peaks_filter = []
+        while (hash_cnt < fan_value and idx < len(peaks)):
+            if freq1 + MIN_FREQ_SPAN < peaks[idx][0] < freq1 + MAX_FREQ_SPAN:
+                freq2, t2 = peaks[idx]
                 t_delta = t2 - t1
 
-                if MIN_HASH_TIME_DELTA <= t_delta <= MAX_HASH_TIME_DELTA:
+                if MIN_TIME_SPAN <= t_delta <= MAX_TIME_SPAN:
+                    hash_cnt += 1
                     h = hashlib.sha1(f"{str(freq1)}|{str(freq2)}|{str(t_delta)}".encode('utf-8'))
+                    hashes.append((h.hexdigest()[0:20], t1))
+                    peaks_filter.append(peaks[idx])
 
-                    hashes.append((h.hexdigest()[0:FINGERPRINT_REDUCTION], t1))
+            idx += 1
 
     return hashes

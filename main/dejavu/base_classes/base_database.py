@@ -4,8 +4,8 @@ from operator import or_
 from functools import reduce
 from django.db.models import Q
 from main.models import \
-    Fingerprint, \
-    FingerprintWithNR
+    Fingerprint
+    # FingerprintWithNR
 
 def return_matches(hashes: List[Tuple[str, int]], category: str,
                    batch_size: int = 1000) -> Tuple[List[Tuple[int, int]], Dict[int, int]]:
@@ -37,10 +37,11 @@ def return_matches(hashes: List[Tuple[str, int]], category: str,
 
 
     results = []
-    Model = Fingerprint if category == 'origin' else FingerprintWithNR
+    # Model = Fingerprint if category == 'origin' else FingerprintWithNR
     print(f'{category} {Model}')
     for index in range(0, len(values), batch_size):
-        queryset = Model.objects.filter(reduce(or_, [Q(hash=hsh) for hsh in values[index: index + batch_size]]))
+        queryset = Fingerprint.objects.filter(reduce(or_, [Q(hash=hsh) for hsh in values[index: index + batch_size]]), \
+                                        recording__category=category)
 
         for fingerprint in queryset:
             hsh = fingerprint.hash

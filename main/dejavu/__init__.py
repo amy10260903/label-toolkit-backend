@@ -12,13 +12,13 @@ from main.utils import NR
 
 from main.models import \
     Recording,\
-    Fingerprint, \
-    RecordingWithNR, \
-    FingerprintWithNR
+    Fingerprint
+    # RecordingWithNR, \
+    # FingerprintWithNR
 from main.serializers import RecordingSerializer,\
-    FingerprintSerializer, \
-    RecordingWithNRSerializer, \
-    FingerprintWithNRSerializer
+    FingerprintSerializer
+    # RecordingWithNRSerializer, \
+    # FingerprintWithNRSerializer
 from main.dejavu.config.settings import (DEFAULT_FS, DEFAULT_OVERLAP_RATIO,
                                     DEFAULT_WINDOW_SIZE, FIELD_FILE_SHA1,
                                     FIELD_TOTAL_HASHES,
@@ -29,21 +29,22 @@ from main.dejavu.config.settings import (DEFAULT_FS, DEFAULT_OVERLAP_RATIO,
 
 songhashes_set = set()
 
-def __load_fingerprinted_audio_hashes(noise_reduction: bool = False) -> None:
+def __load_fingerprinted_audio_hashes(noise_reduction: bool = False, category: str = 'origin') -> None:
     """
     Keeps a dictionary with the hashes of the fingerprinted songs, in that way is possible to check
     whether or not an audio file was already processed.
     """
     # get songs previously indexed
-    if noise_reduction:
-        recordings = RecordingWithNR.objects.all()
-    else:
-        recordings = Recording.objects.all()
+    recordings = Recording.objects.filter(category=category)
+    # if noise_reduction:
+    #     recordings = RecordingWithNR.objects.all()
+    # else:
+    #     recordings = Recording.objects.all()
     for song in recordings:
         song_hash = song.file_sha1
         songhashes_set.add(song_hash)
 
-def fingerprint_directory(path: str, extensions: str, nprocesses: int = None, noise_reduction: bool = False) -> None:
+def fingerprint_directory(path: str, extensions: str, nprocesses: int = None) -> None:
     """
     Given a directory and a set of extensions it fingerprints all files that match each extension specified.
 
@@ -72,7 +73,7 @@ def fingerprint_directory(path: str, extensions: str, nprocesses: int = None, no
 
     # Prepare _fingerprint_worker input
     limit = None
-    worker_input = list(zip(filenames_to_fingerprint, [limit] * len(filenames_to_fingerprint), [noise_reduction] * len(filenames_to_fingerprint)))
+    worker_input = list(zip(filenames_to_fingerprint, [limit] * len(filenames_to_fingerprint)))
 
     # Send off our tasks
     iterator = pool.imap_unordered(_fingerprint_worker, worker_input)
@@ -95,54 +96,44 @@ def fingerprint_directory(path: str, extensions: str, nprocesses: int = None, no
                 'file_sha1': file_hash,
                 'hashes': hashes
             }
-            update_recording_file(data, noise_reduction)
+            update_recording_file(data)
 
     pool.close()
     pool.join()
 
-def update_recording_file(args, noise_reduction):
+def update_recording_file(args):
     song_name = args['filename']
     file_hash = args['file_sha1']
     hashes = args['hashes']
 
-    Model = {}
-    Serializer = {}
-    if noise_reduction:
-        Model['recording'] = RecordingWithNR
-        Model['fingerprint'] = FingerprintWithNR
-        Serializer['recording'] = RecordingWithNRSerializer
-        Serializer['fingerprint'] = FingerprintWithNRSerializer
+    split_text = song_name.split('.')[0].split('_')
+    category = f"{split_text[-2]}_{split_text[-1]}"
 
-    else:
-        Model['recording'] = Recording
-        Model['fingerprint'] = Fingerprint
-        Serializer['recording'] = RecordingSerializer
-        Serializer['fingerprint'] = FingerprintSerializer
-
-    recording = Model['recording'].objects.filter(filename=song_name).first()
+    recording = Recording.objects.filter(category=category, filename=song_name).first()
     if not recording:
         data = {
+            'category': category,
             'filename': song_name,
             'file_sha1': file_hash,
             'total_hashes': len(hashes)
         }
-        serializer = Serializer['recording'](data=data, many=False)
+        serializer = RecordingSerializer(data=data, many=False)
         if serializer.is_valid():
             serializer.save()
 
-            recording = Model['recording'].objects.filter(filename=song_name).first()
+            recording = Recording.objects.filter(category=category, filename=song_name).first()
         else:
             raise Exception(serializer.errors)
 
     for hash, offset in hashes:
-        fingerprint = Model['fingerprint'].objects.filter(recording=recording.id, hash=hash, offset=offset).first()
+        fingerprint = Fingerprint.objects.filter(recording=recording.id, hash=hash, offset=offset).first()
         if not fingerprint:
             data = {
                 'recording': recording.id,
                 'hash': hash,
                 'offset': offset
             }
-            serializer = Serializer['fingerprint'](data=data, many=False)
+            serializer = FingerprintSerializer(data=data, many=False)
             if serializer.is_valid():
                 serializer.save()
 
@@ -202,9 +193,9 @@ def align_matches(matches: List[Tuple[int, int]], dedup_hashes: Dict[str, int], 
     )
 
     songs_result = []
-    Model = Recording if category == 'origin' else RecordingWithNR
+    # Model = Recording if category == 'origin' else RecordingWithNR
     for song_id, offset, _ in songs_matches[0:topn]:  # consider topn elements in the result
-        song = Model.objects.filter(id=song_id).first()
+        song = Recording.objects.filter(id=song_id).first()
         song_name = song.filename
         song_hashes = song.total_hashes
         song_file_sha1 = song.file_sha1
@@ -238,25 +229,21 @@ def _fingerprint_worker(arguments):
     # Pool.imap sends arguments as tuples so we have to unpack
     # them ourself.
     try:
-        file_name, limit, noise_reduction = arguments
+        file_name, limit, category = arguments
     except ValueError:
         pass
 
     song_name, extension = os.path.splitext(os.path.basename(file_name))
 
-    fingerprints, file_hash = get_file_fingerprints(file_name, limit, noise_reduction=noise_reduction, print_output=True)
+    fingerprints, file_hash = get_file_fingerprints(file_name, limit, print_output=True)
 
     return song_name, fingerprints, file_hash
 
-def get_file_fingerprints(file_name: str, limit: int, noise_reduction: bool = False, print_output: bool = False):
+def get_file_fingerprints(file_name: str, limit: int, print_output: bool = False):
     channels, fs, file_hash = decoder.read(file_name, limit)
     fingerprints = set()
     channel_amount = len(channels)
     for channeln, channel in enumerate(channels, start=1):
-        if noise_reduction:
-            nr_mode = 3
-            channel = NR(channel, fs, mode=nr_mode, plot=False)
-
         if print_output:
             print(f"Fingerprinting channel {channeln}/{channel_amount} for {file_name}")
 

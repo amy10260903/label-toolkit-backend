@@ -104,3 +104,10 @@ FINGERPRINT_REDUCTION = 20
 
 # Number of results being returned for file recognition
 TOPN = 5
+
+AMP_MIN = 30
+FAN_SIZE = 10
+MIN_FREQ_SPAN = -127
+MAX_FREQ_SPAN = 127
+MIN_TIME_SPAN = 1
+MAX_TIME_SPAN = 100
