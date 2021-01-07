@@ -38,11 +38,7 @@ class Command(BaseCommand):
                 extension = options['fingerprint'][1]
                 self.stdout.write(f"Fingerprinting all .{extension} files in the {directory} directory")
 
-                if options['noisereduce']:
-                    nr = True if options['noisereduce'][0]=='y' else False
-                    fingerprint_directory(directory, ["." + extension], 4, nr)
-                else:
-                    fingerprint_directory(directory, ["." + extension], 4)
+                fingerprint_directory(directory, ["." + extension], 4)
 
             elif len(options['fingerprint']) == 1:
                 filepath = options['fingerprint'][0]

@@ -107,7 +107,10 @@ def update_recording_file(args):
     hashes = args['hashes']
 
     split_text = song_name.split('.')[0].split('_')
-    category = f"{split_text[-2]}_{split_text[-1]}"
+    if split_text[-1] == 'real':
+        category = split_text[-1]
+    else:
+        category = f"{split_text[-2]}_{split_text[-1]}"
 
     recording = Recording.objects.filter(category=category, filename=song_name).first()
     if not recording:
@@ -229,7 +232,7 @@ def _fingerprint_worker(arguments):
     # Pool.imap sends arguments as tuples so we have to unpack
     # them ourself.
     try:
-        file_name, limit, category = arguments
+        file_name, limit= arguments
     except ValueError:
         pass
 
