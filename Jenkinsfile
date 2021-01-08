@@ -1,0 +1,5 @@
+pipeline {
+    triggers {
+        githubPush()
+    }
+}
