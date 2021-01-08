@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_mysql',
+    'django_jenkins',
     'corsheaders',
     'rest_framework',
 
@@ -93,6 +94,18 @@ DATABASES = {
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
     'default': env.db(),
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'labeltool',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306',
+    #     'USER': 'admin',
+    #     'PASSWORD': '7Qt84hZ6p1R4',
+    #     'OPTIONS': {
+    #         'init_command': 'SET default_storage_engine=INNODB, sql_mode="STRICT_TRANS_TABLES", innodb_strict_mode=ON ',
+    #         'charset': 'utf8mb4',
+    #     }
+    # },
     'extra': env.db('SQLITE_URL', default='sqlite:////db.sqlite3')
 }
 
@@ -155,3 +168,11 @@ CACHES = {
         },
     },
 }
+
+JENKINS_TASKS = (
+    'django_jenkins.tasks.run_pep8',
+    'django_jenkins.tasks.run_pyflakes',
+    'django_jenkins.tasks.run_jslint',
+    'django_jenkins.tasks.run_csslint',
+    'django_jenkins.tasks.run_sloccount'
+)
