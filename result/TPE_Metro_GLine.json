@@ -1,0 +1,122 @@
+{
+    "event_name": "TPE_Metro_GLine.mp3",
+    "category": "record_mrt",
+    "extension": ".wav",
+    "fingerprint_time": 1.2262489795684814,
+    "query_time": 8.600607872009277,
+    "matched_result": [
+        {
+            "recording_id": 9,
+            "recording_name": "TPE_Metro_GLine_03",
+            "input_total_hashes": 28756,
+            "fingerprinted_hashes_in_db": 16691,
+            "hashes_matched_in_input": 281,
+            "input_confidence": 0.01,
+            "fingerprinted_confidence": 0.02,
+            "timestamp": [
+                [
+                    905,
+                    1456
+                ],
+                [
+                    904,
+                    1456
+                ]
+            ],
+            "timestamp_in_seconds": [
+                [
+                    42.03,
+                    67.62
+                ],
+                [
+                    41.98,
+                    67.62
+                ]
+            ],
+            "file_sha1": "18ECE1016659A6AC0930AB5518D887AEAE385829"
+        },
+        {
+            "recording_id": 10,
+            "recording_name": "TPE_Metro_GLine_04",
+            "input_total_hashes": 28756,
+            "fingerprinted_hashes_in_db": 35039,
+            "hashes_matched_in_input": 425,
+            "input_confidence": 0.01,
+            "fingerprinted_confidence": 0.01,
+            "timestamp": [
+                [
+                    1057,
+                    1576
+                ],
+                [
+                    2137,
+                    2399
+                ]
+            ],
+            "timestamp_in_seconds": [
+                [
+                    49.09,
+                    73.19
+                ],
+                [
+                    99.24,
+                    111.41
+                ]
+            ],
+            "file_sha1": "3D7DD6017F549DA74D34CF2DF298788FC9BFF844"
+        },
+        {
+            "recording_id": 8,
+            "recording_name": "TPE_Metro_GLine_02",
+            "input_total_hashes": 28756,
+            "fingerprinted_hashes_in_db": 28151,
+            "hashes_matched_in_input": 423,
+            "input_confidence": 0.01,
+            "fingerprinted_confidence": 0.02,
+            "timestamp": [
+                [
+                    1369,
+                    1917
+                ]
+            ],
+            "timestamp_in_seconds": [
+                [
+                    63.58,
+                    89.03
+                ]
+            ],
+            "file_sha1": "188AA4DDAE5CE3506C38371DCC2192906064EF68"
+        },
+        {
+            "recording_id": 7,
+            "recording_name": "TPE_Metro_GLine_01",
+            "input_total_hashes": 28756,
+            "fingerprinted_hashes_in_db": 25323,
+            "hashes_matched_in_input": 332,
+            "input_confidence": 0.01,
+            "fingerprinted_confidence": 0.01,
+            "timestamp": [
+                [
+                    796,
+                    1318
+                ],
+                [
+                    791,
+                    1297
+                ]
+            ],
+            "timestamp_in_seconds": [
+                [
+                    36.97,
+                    61.21
+                ],
+                [
+                    36.73,
+                    60.23
+                ]
+            ],
+            "file_sha1": "948022A147AFD6EABFFC09ED2C0140F427209174"
+        }
+    ],
+    "accuracy": 0.0
+}

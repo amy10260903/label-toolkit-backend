@@ -1,0 +1,9 @@
+{
+    "event_name": "TPE_Metro_OLine",
+    "category": "record_mrt",
+    "extension": ".wav",
+    "fingerprint_time": 1.0396931171417236,
+    "query_time": 7.777962923049927,
+    "matched_result": [],
+    "accuracy": 0.0
+}

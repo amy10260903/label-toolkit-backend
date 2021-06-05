@@ -1,19 +1,13 @@
 from rest_framework import mixins
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from django.core.cache import cache
 from django_redis import get_redis_connection
-import pickle
+import json
 
-from main.models import Recording, Fingerprint
-from main.serializers import RecordingSerializer, FingerprintSerializer
-
-from main.dejavu import recognize
-from main.dejavu.logic.recognizer.file_recognizer import FileRecognizer
+from main.method import recognize
+from main.method.encoder import MyEncoder
 
 # Create your views here.
 class FingerprintViewSet(mixins.CreateModelMixin,
@@ -31,10 +25,15 @@ class FingerprintViewSet(mixins.CreateModelMixin,
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
         file = request.data['file']
-        songs = recognize(FileRecognizer, file, request.data['category'])
+        params = {'thsld': 18, 'fan': 40}
+        is_stream = True
+        recordings = recognize(file, request.data['category'], params, is_stream)
+        recordings = recordings._replace(
+                        matched_result=[obj._asdict() for obj in recordings.matched_result],
+                        event_name=request.data['filename'])
 
-        if songs:
-            return Response(songs, status=status.HTTP_200_OK)
+        if recordings:
+            return Response(json.dumps(recordings._asdict(), cls=MyEncoder), status=status.HTTP_200_OK)
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -45,7 +44,7 @@ class OptionViewSet(mixins.CreateModelMixin,
     def list(self, request, *args, **kwargs):
         response = {}
         default = get_redis_connection('default')
-        response['results'] = default.smembers('dataset')
+        response['results'] = sorted(default.smembers('dataset'))
         # if cache.has_key('dataset'):
         #     response['dataset'] = cache.get('dataset')
 

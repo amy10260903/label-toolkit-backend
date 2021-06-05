@@ -38,7 +38,7 @@ def return_matches(hashes: List[Tuple[str, int]], category: str,
 
     results = []
     # Model = Fingerprint if category == 'origin' else FingerprintWithNR
-    print(f'{category} {Model}')
+    # print(f'{category} {Model}')
     for index in range(0, len(values), batch_size):
         queryset = Fingerprint.objects.filter(reduce(or_, [Q(hash=hsh) for hsh in values[index: index + batch_size]]), \
                                         recording__category=category)

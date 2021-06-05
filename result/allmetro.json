@@ -1,0 +1,54 @@
+{
+    "event_name": "allmetro",
+    "category": "record_mrt",
+    "extension": ".wav",
+    "fingerprint_time": 9.45529580116272,
+    "query_time": 13.23534893989563,
+    "matched_result": [
+        {
+            "recording_id": 8,
+            "recording_name": "TPE_Metro_GLine_02",
+            "input_total_hashes": 63785,
+            "fingerprinted_hashes_in_db": 28151,
+            "hashes_matched_in_input": 449,
+            "input_confidence": 0.01,
+            "fingerprinted_confidence": 0.02,
+            "timestamp": [
+                [
+                    1413,
+                    2401
+                ]
+            ],
+            "timestamp_in_seconds": [
+                [
+                    65.62,
+                    111.5
+                ]
+            ],
+            "file_sha1": "188AA4DDAE5CE3506C38371DCC2192906064EF68"
+        },
+        {
+            "recording_id": 4,
+            "recording_name": "TPE_Metro_BLine_04",
+            "input_total_hashes": 63785,
+            "fingerprinted_hashes_in_db": 53793,
+            "hashes_matched_in_input": 525,
+            "input_confidence": 0.01,
+            "fingerprinted_confidence": 0.01,
+            "timestamp": [
+                [
+                    675,
+                    2423
+                ]
+            ],
+            "timestamp_in_seconds": [
+                [
+                    31.35,
+                    112.52
+                ]
+            ],
+            "file_sha1": "AB7409E91B5A1D46487C7C26035EFA6E54702849"
+        }
+    ],
+    "accuracy": 0.0
+}
