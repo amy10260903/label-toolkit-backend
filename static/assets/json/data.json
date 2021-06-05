@@ -1,0 +1,4 @@
+{
+    "category": ["origin", "noise_reduce"],
+    "target": ["test-mrt-music-cut-nr", "test-mrt-music-cut", "test-mrt-music-download"]
+}

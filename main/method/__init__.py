@@ -23,11 +23,10 @@ def __load_fingerprinted_audio_hashes(category: str = 'default') -> None:
 def fingerprint_directory(path: str, extensions: str, category: str) -> None:
     files = glob(os.path.join(path, f"*.{extensions}"))
     __load_fingerprinted_audio_hashes(category=category)
-    print(songhashes_set)
     for f in sorted(files):
         filename = os.path.basename(f)
 
-        if sf.file_hashes(f) in songhashes_set:
+        if sf.file_hashes(f, is_stream=False) in songhashes_set:
             print(f"{filename} already fingerprinted, continuing...")
             continue
 
@@ -59,7 +58,7 @@ def update_recording_file(args):
         if serializer.is_valid():
             serializer.save()
 
-            recording = Recording.objects.filter(category=category, filename=song_name).first()
+            recording = Recording.objects.filter(category=category, filename=filename).first()
         else:
             raise Exception(serializer.errors)
 

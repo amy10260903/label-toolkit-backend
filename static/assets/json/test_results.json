@@ -1,0 +1,36 @@
+{
+	"event_name": "src/event/origin/TPE_Metro_OLine.mp3",
+	"category": "origin_10db",
+    "fingerprint_time": 0.41851210594177246,
+    "query_time": 7.715227127075195,
+    "results": [
+        {
+            "song_id": 1,
+            "song_name": "TW_TPE_008",
+            "input_total_hashes": 4207,
+            "fingerprinted_hashes_in_db": 31142,
+            "hashes_matched_in_input": 524,
+            "input_confidence": 0.12,
+            "fingerprinted_confidence": 0.02,
+            "offset": 408,
+            "offset_seconds": 18.94748,
+            "timestamp": [{"onset": 86, "offset": 604}, {"onset": 2849, "offset": 3340}, {"onset": 1214, "offset": 1722}], 
+            "timestamp_in_seconds": [{"onset": 3.99, "offset": 28.05}, {"onset": 56.38, "offset": 79.97}, {"onset": 132.31, "offset": 155.11}],
+            "file_sha1": "DD6EA2A3C15CCA71552F7508A0973C6C9AE9487C"
+        },
+        {
+            "song_id": 1,
+            "song_name": "TW_TPE_001",
+            "input_total_hashes": 4207,
+            "fingerprinted_hashes_in_db": 31142,
+            "hashes_matched_in_input": 524,
+            "input_confidence": 0.12,
+            "fingerprinted_confidence": 0.02,
+            "offset": 408,
+            "offset_seconds": 18.94748,
+            "timestamp": [{"onset": 86, "offset": 604}, {"onset": 2849, "offset": 3340}, {"onset": 1214, "offset": 1722}], 
+            "timestamp_in_seconds": [{"onset": 13.99, "offset": 128.05}, {"onset": 156.38, "offset": 179.97}],
+            "file_sha1": "DD6EA2A3C15CCA71552F7508A0973C6C9AE9487C"
+        }
+    ]
+}

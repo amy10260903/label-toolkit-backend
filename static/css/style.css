@@ -1,0 +1,342 @@
+body {
+	background-color: #071c51;
+  text-align: center;
+  margin:0;
+}
+h1 {
+  font-size: 32px;
+  color: #df5032;
+}
+input[type="button"] {
+  background: rgba(255,255,255,1);
+  color: rgba(0,0,0,1); 
+  width: 60px;
+  height: 30px;
+  text-align: center;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 0px;
+}
+input[type="button"]:disabled {
+  background: rgba(255,255,255,.3);
+  color: rgba(0,0,0,.3);
+}
+input[type="button"]:active {
+  background: grey;
+  color: white;
+  outline: none !important;
+}
+input[type="button"]:focus {
+  outline: none !important;
+}
+input[type="range"]{
+  margin-left: 10px;
+  -webkit-appearance: none;
+  border-radius:2px;
+  width:140px;
+  height:6px;
+  background-image:-webkit-linear-gradient(left ,#df5032 0%,#df5032 50%,#fff 50%, #fff 100%);
+  box-shadow:inset #ebb 0 0 5px;
+  outline : none;
+  transition:.2s;
+}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  width:12px;
+  height:12px;
+  background:#df5032;
+  border-radius:50%;
+  transition:.2s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover,
+input[type="range"]::-webkit-slider-thumb:active{
+  width:16px;
+  height:16px;
+}
+
+input[type="text"]{
+  background-color: #fff;
+  color: black;
+  padding: 0.8rem;
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+}
+input[type="text"]:focus {
+  outline: none !important;
+  box-shadow:inset skyblue 0 0 3px 2px;
+}
+
+/* Title */
+#section-title {
+  padding: 20px 0 40px 0;
+}
+
+#section-title > .container {
+  width: 100%;
+  text-align: center;
+}
+
+/* Selection */
+#section-selection {
+  padding: 10vh;
+}
+#section-selection > .container {
+  width: 100%;
+  text-align: center;
+}
+#section-selection > .container > .content {
+	width: 80%;
+	padding-left: 100px;
+}
+#section-selection > .container > .content > div > .label {
+	color: white; 
+	font-size: 16px; 
+	margin: 6px 20px; 
+	float:left;
+}
+#section-selection > .container > .content > form > div > .label {
+  color: white; 
+  font-size: 16px; 
+  margin: 6px 20px; 
+  float:left;
+}
+
+/* Waveform */
+#section-waveform {
+  margin-top: 10vh;
+}
+#section-waveform > .wrapper {
+  width: 100vw;
+  text-align: center;
+  position: relative;
+}
+#section-waveform > .wrapper > #waveform {
+  width: 80%;
+  margin:10px auto;
+  border-radius: 20px;
+}
+#section-waveform > .wrapper > #wave-spectrogram {
+  width: 80%;
+  margin:10px auto;
+  border-radius: 20px;
+}
+#section-waveform > .wrapper > #content-tag {
+  position: absolute; 
+  top:-20%; 
+  left:10%; 
+  width: 80%; 
+  height: 20px;
+}
+#section-waveform > .wrapper > #content-tag > .item {
+  position: absolute; 
+  width: auto;
+  height: 20px;
+  padding: 4px 8px;
+  background: rgba(255,255,255,.4);
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 14px;
+}
+#section-waveform > .wrapper > #content-tag > .item .hide {
+  display: none;
+}
+#section-waveform > .wrapper > #content-tag > .item:hover .hide{
+  display: inline-block;
+}
+/*#section-waveform > .wrapper > #content-block {*/
+/*  position: absolute; */
+/*  top:0; */
+/*  left:10%; */
+/*  width: auto; */
+/*  height: 80%;   */
+/*  z-index: 100;*/
+/*}*/
+/*#section-waveform > .wrapper > #content-block > .item {*/
+/*  position: absolute;*/
+/*  left: 20px;*/
+/*  !*width: 60px;*!*/
+/*  height: 100%;*/
+/*  background: rgba(255,255,255,.3);*/
+/*  border-radius: 6px;*/
+/*}*/
+/*#section-waveform > .wrapper > #content-block > .item-focus {*/
+/*  box-sizing: border-box;*/
+/*  border: 2px solid rgba(255,255,255,.6);*/
+/*  resize: horizontal;*/
+/*  overflow: auto;*/
+/*}*/
+#section-waveform > .wrapper > .content-segment > .item {
+  position: absolute;
+  left: 20px;
+  /*width: 60px;*/
+  height: 100%;
+  background: rgba(255,255,255,.3);
+  border-radius: 6px;
+}
+#section-waveform > .wrapper > .content-segment > .item-focus {
+  box-sizing: border-box;
+  border: 2px solid rgba(255,255,255,.6);
+  /*resize: horizontal;*/
+  overflow: auto;
+}
+#section-waveform > .wrapper > .content-segment > .item-focus > .item-drag {
+  width: 100%;
+  height: 100%;
+}
+#section-waveform > .wrapper > .content-segment > .item-focus .resizer-right {
+  width: 5px;
+  height: 100%;
+  background: transparent;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: e-resize;
+}
+#section-waveform > .wrapper > .content-segment {
+  display: none;
+  position: absolute;
+  max-width: 80%;
+  top:0;
+  left:10%;
+  width: auto;
+  height: 80%;
+  z-index: 100;
+}
+
+/* Loader */
+#section-loader {
+  display: none;
+}
+#section-loader > .container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  z-index: 100;
+  padding-top: 45vh;
+  background-color: rgba(0,0,0,0.4);
+}
+#section-loader > .container > p {
+  color: white;
+}
+
+
+/* Customized Upload File */
+.custom-input {
+  position: relative; 
+  font-size: 14px;
+  float:left;
+}
+
+.custom-input.upload input {
+  display: none; 
+}
+.custom-input.upload > label{
+  display: inline-block;
+  background-color: #fff;
+  color: black;
+  padding: 0.8rem;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-input.upload input {
+  display: none;
+}
+.custom-input.upload > label{
+  display: inline-block;
+  background-color: #fff;
+  color: black;
+  padding: 0.8rem;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-input.submit input {
+  display: none; 
+}
+.custom-input.submit > label{
+  display: inline-block;
+  background-color: #fff;
+  color: black;
+  padding: 0.6rem 1rem;
+  font-size: 14px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.custom-input.submit > label:hover{
+  background-color: lightblue;
+}
+
+/* Customized Selection Box */
+
+/*the container must be positioned relative:*/
+.custom-select {
+  position: relative;
+  width: 160px;
+  font-size: 14px;
+  float:left;
+}
+
+.custom-select select {
+  display: none; /*hide original SELECT element:*/
+}
+
+.select-selected {
+  background-color: white;
+}
+
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/*style the items (options), including the selected item:*/
+.select-items div,.select-selected {
+  color: black;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 6px;
+}
+
+/*style items (options):*/
+.select-items {
+  position: absolute;
+  background-color: lightgrey;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  border-radius: 6px;
+}
+
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: lightblue;
+}

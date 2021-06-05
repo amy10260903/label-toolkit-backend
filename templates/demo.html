@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Label Toolkit for JPTW Project | AHG</title>
+		<!--<link rel="icon" href="assets/images/favicon/toolkit.ico"/>-->
+		 <link rel="shortcut icon" href="/static/assets/images/icon/toolkit-01.png" type="image/x-icon" />
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js"></script>
+
+		<!-- Style -->
+		<link rel="stylesheet" href="/static/css/style.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+		<!-- Wave Surfer -->
+		<script src="https://unpkg.com/wavesurfer.js"></script>
+		<script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.spectrogram.min.js"></script>
+
+		<!-- Resize Sensor -->
+		<script src="/static/plugins/css-element-queries/src/ResizeSensor.js"></script>
+		<script src="/static/plugins/css-element-queries/src/ElementQueries.js"></script>
+
+		<!-- Custom Selectbox -->
+		<script src="/static/plugins/jquery-nice-select/js/jquery.js"></script>
+		<script src="/static/plugins/jquery-nice-select/js/jquery.nice-select.js"></script>
+		<link rel="stylesheet" href="/static/plugins/jquery-nice-select/css/nice-select.css">
+
+		<!-- Loader.css -->
+		<script src="/static/plugins/loaders.css/loaders.css.js"></script>
+		<link rel="stylesheet" href="/static/plugins/loaders.css/loaders.min.css">
+
+		<!-- Slider -->
+		<script src="/static/js/slider.js"></script>
+	</head>
+	<body>
+		<section id="section-title">
+			<h1>Label Toolkit for JP-TW Project</h1>
+		</section>
+		<section id="section-selection">
+			<div class="container">
+				<div class="content">
+					<form id="selection-form">
+						<div style="margin-left: 20px; width: 30%; float:left;">
+							<div class="label">Dataset</div>
+					        <div class="custom-select">
+					        	<select id="select-location">
+					        		<option value="" disabled selected>Source</option>
+					        	</select>
+					        </div>
+				    	</div>
+				        <div style="margin-left: 20px; width: 30%; float:left;">
+					        <div class="label">Search</div>
+					        <div class="custom-input upload">
+					        	<input type="file" id="upload-btn" accept="audio/*" />
+								<label for="upload-btn" id="upload-label">Choose file</label>
+							</div>
+				    	</div>
+				    	<div style="width: auto; float:right;">
+					    	<div class="custom-input submit">
+						        <input type="button" id="btn-submit"/>
+								<label for="btn-submit">Start</label>
+							</div>
+						</div>
+			    	</form>
+			    	<div style="margin-left: 20px; width: 30%; float:left; display: none;" id="candidate">
+						<div class="label">Candidate</div>
+				        <div class="custom-select">
+				        	<select id="select-soundsource">
+				        		<option value="" disabled selected>Result</option>
+				        	</select>
+				        </div>
+			    	</div>
+					<div style="margin-left: 20px; width: 30%; float:left; display: none;" id="label">
+						<div class="label">Label</div>
+				        <div class="custom-input text">
+							<input type="text" id="text-label" placeholder="Sound Event Name"/>
+				        </div>
+			    	</div>
+					<div style="width: auto; float:right; display: none;" id="export">
+						<div class="custom-input submit">
+							<input type="button" id="btn-export"/>
+							<label for="btn-export">Export</label>
+						</div>
+					</div>
+		    	</div>
+		    </div>
+		</section>
+		<section id="section-waveform">
+			<div class="wrapper">
+		        <div id="waveform"></div>
+		        <div id="wave-spectrogram"></div>
+
+				<!-- Create action buttons -->
+		        <input type="button" id="btn-play" value="Play" disabled="disabled"/>
+		        <input type="button" id="btn-pause" value="Pause" disabled="disabled"/>
+		        <input type="button" id="btn-stop" value="Stop" disabled="disabled" />
+		        <input type="range" id="slider" min="0" max="100" step="1" value="50">
+		        <div id="content-tag"></div>
+		        <div id="content-block"></div>
+		    </div>
+		</section>
+		<section id="section-loader">
+			<div class="container" id="loader">
+        		<div class="loader-inner line-scale-pulse-out"></div>
+        		<p class="loading">Analysing</p>
+    		</div>
+		</section>
+    </body>
+	<script src="/static/js/spectrum.js"></script>
+	<script type="module">
+		import { startAnalysis, updateSpectrum } from '/static/js/demo.js';
+		$('#btn-submit').click( function() {
+			startAnalysis();
+		});
+
+		$('#select-soundsource').change( function() {
+			updateSpectrum();
+		});
+	</script>
+</html>   

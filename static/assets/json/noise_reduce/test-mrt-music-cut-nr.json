@@ -1,0 +1,68 @@
+{
+    "total_time": 1.0727057456970215,
+    "fingerprint_time": 0.23131108283996582,
+    "query_time": 0.829024076461792,
+    "align_time": 0.010898351669311523,
+    "results": [
+        {
+            "song_id": 6,
+            "song_name": "TW_TPE_009",
+            "input_total_hashes": 5551,
+            "fingerprinted_hashes_in_db": 657545,
+            "hashes_matched_in_input": 559,
+            "input_confidence": 0.1,
+            "fingerprinted_confidence": 0.0,
+            "offset": -295,
+            "offset_seconds": -13.69977,
+            "file_sha1": "2EF036751A001CE55BE04FEF857C22DF8D0213D0"
+        },
+        {
+            "song_id": 3,
+            "song_name": "TW_TPE_006",
+            "input_total_hashes": 5551,
+            "fingerprinted_hashes_in_db": 372838,
+            "hashes_matched_in_input": 386,
+            "input_confidence": 0.07,
+            "fingerprinted_confidence": 0.0,
+            "offset": -46,
+            "offset_seconds": -2.13624,
+            "file_sha1": "EB80AE6E7FB8EC9DE47DD29E3ED4EAC2D1948EE1"
+        },
+        {
+            "song_id": 4,
+            "song_name": "TW_TPE_005",
+            "input_total_hashes": 5551,
+            "fingerprinted_hashes_in_db": 432810,
+            "hashes_matched_in_input": 385,
+            "input_confidence": 0.07,
+            "fingerprinted_confidence": 0.0,
+            "offset": -281,
+            "offset_seconds": -13.04961,
+            "file_sha1": "6763D1381B615892AA7CF3AF6460B9A722C7A024"
+        },
+        {
+            "song_id": 5,
+            "song_name": "TW_TPE_008",
+            "input_total_hashes": 5551,
+            "fingerprinted_hashes_in_db": 545774,
+            "hashes_matched_in_input": 408,
+            "input_confidence": 0.07,
+            "fingerprinted_confidence": 0.0,
+            "offset": 11374,
+            "offset_seconds": 528.20753,
+            "file_sha1": "E856024EB9915FBCEDE37CFBC57A9E98B79BC142"
+        },
+        {
+            "song_id": 7,
+            "song_name": "TW_TPE_003",
+            "input_total_hashes": 5551,
+            "fingerprinted_hashes_in_db": 343351,
+            "hashes_matched_in_input": 269,
+            "input_confidence": 0.05,
+            "fingerprinted_confidence": 0.0,
+            "offset": 5448,
+            "offset_seconds": 253.00463,
+            "file_sha1": "3E6F8FDC884F1ECFFBEE128E241BD7026C5E3105"
+        }
+    ]
+}
