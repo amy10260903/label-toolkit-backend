@@ -122,25 +122,26 @@ function startAnalysis() {
     };
     Loader.show();
     Loader.hide();
-    $.getJSON('/static/assets/json/results.json', function( json ) {
-        // console.log(json);
-        ext = json.extension;
-        getLabel();
-        getDetail(json.matched_result);
-        updateSpectrum();
-    });
-    // uploadFile(data)
-    //     .then(function (response) {
-    //         let results = JSON.parse(response.data)
-    //         console.log(results);
-    //         Loader.hide();
-    //         getLabel();
-    //         getDetail(results.matched_result);
-    //         updateSpectrum();
-    //     })
-    //     .catch(function (response) {
-    //         console.log(response);
-    //     });
+    // $.getJSON('/static/assets/json/results.json', function( json ) {
+    //     // console.log(json);
+    //     ext = json.extension;
+    //     getLabel();
+    //     getDetail(json.matched_result);
+    //     updateSpectrum();
+    // });
+    uploadFile(data)
+        .then(function (response) {
+            let results = JSON.parse(response.data)
+            console.log(results);
+            ext = results.extension;
+            Loader.hide();
+            getLabel();
+            getDetail(results.matched_result);
+            updateSpectrum();
+        })
+        .catch(function (response) {
+            console.log(response);
+        });
 }
 
 /**
