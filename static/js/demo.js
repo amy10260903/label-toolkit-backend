@@ -121,7 +121,7 @@ function startAnalysis() {
         filename: $("#upload-btn").val().split(/^.*[\\\/]/).pop().split('.').shift() || 'default',
     };
     Loader.show();
-    Loader.hide();
+    // Loader.hide();
     // $.getJSON('/static/assets/json/results.json', function( json ) {
     //     // console.log(json);
     //     ext = json.extension;
