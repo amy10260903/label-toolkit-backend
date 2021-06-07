@@ -14,12 +14,14 @@ let ext = '.wav';
 $( document ).ready(function() {
     getOptions()
         .then(function (response) {
-            console.log(response);
-            response.data.results.forEach((key => {
-                let option = document.createElement("option");
-                option.text = key;
-                $('#select-location').append(option);
-            }))
+            let options = JSON.parse(response.data.results);
+            Object.keys(options).forEach(key => {
+                options[key].forEach((val => {
+                    let option = document.createElement("option");
+                    option.text = val;
+                    $(`#select-${key}`).append(option);
+                }))
+            })
             $('select').niceSelect();
         })
         .catch(function (response) {
@@ -117,9 +119,11 @@ function startAnalysis() {
     console.log('startAnalysis');
     const data = {
         category: $(".current")[0].innerHTML,
-        file: $("#upload-btn").prop('files')[0],
-        filename: $("#upload-btn").val().split(/^.*[\\\/]/).pop().split('.').shift() || 'default',
+        // file: $("#upload-btn").prop('files')[0],
+        // filename: $("#upload-btn").val().split(/^.*[\\\/]/).pop().split('.').shift() || 'default',
+        event: $(".current")[1].innerHTML,
     };
+    console.log(data);
     Loader.show();
     // Loader.hide();
     // $.getJSON('/static/assets/json/results.json', function( json ) {
@@ -131,7 +135,7 @@ function startAnalysis() {
     // });
     uploadFile(data)
         .then(function (response) {
-            let results = JSON.parse(response.data)
+            let results = JSON.parse(response.data.results)
             console.log(results);
             ext = results.extension;
             Loader.hide();
@@ -148,7 +152,8 @@ function startAnalysis() {
  * UPDATE list and show the results
  */
 function getLabel() {
-    let label = $("#upload-btn").val().split(/^.*[\\\/]/).pop().split('.').shift() || 'sound-event-name';
+    // let label = $("#upload-btn").val().split(/^.*[\\\/]/).pop().split('.').shift() || 'sound-event-name';
+    let label = $(".current")[1].innerHTML || 'sound-event-name';
     $('#text-label').attr('value', label);
 }
 function getDetail(data) {
@@ -177,10 +182,10 @@ function getDetail(data) {
  * UPDATE show corresponded spectrum of selected audio track
  */
 function updateSpectrum() {
-    const key = $('.current')[1].innerHTML;
+    const key = $('.current')[2].innerHTML;
     Spectrum.load(`/static/assets/dataset/${dirname}/${key}${ext}`);
     Spectrum.on('ready', function() {
-        addSegments($('.current')[1].innerHTML);
+        addSegments($('.current')[2].innerHTML);
     });
 }
 
