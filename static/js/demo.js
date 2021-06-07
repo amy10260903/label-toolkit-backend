@@ -123,7 +123,6 @@ function startAnalysis() {
         // filename: $("#upload-btn").val().split(/^.*[\\\/]/).pop().split('.').shift() || 'default',
         event: $(".current")[1].innerHTML,
     };
-    console.log(data);
     Loader.show();
     // Loader.hide();
     // $.getJSON('/static/assets/json/results.json', function( json ) {

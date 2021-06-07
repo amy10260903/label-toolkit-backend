@@ -11,7 +11,7 @@ const makeFormdata = (data) => {
 }
 
 const uploadFile = (data) => {
-    console.log('data', data);
+    // console.log('data', data);
     const params = makeFormdata(data);
     return axios({
         method: 'POST',
