@@ -48,4 +48,3 @@ sqlparse==0.4.1
 threadpoolctl==2.1.0
 urllib3==1.26.2
 webrtcvad==2.0.10
-fontawesome-free==5.15.3
