@@ -1,6 +1,6 @@
 import { uploadFile } from '/static/api/fingerprint.js';
 import { getOptions } from '/static/api/option.js';
-import { dragElement, resizeElement } from '/static/js/interact.js';
+import { dragElement, resizeElement, updateElementPosition } from '/static/js/interact.js';
 import { exportCSVFile } from '/static/js/export.js';
 
 const results = {};
@@ -40,44 +40,46 @@ $('#upload-btn').change(function() {
  * EVENTS
  */
 const Audio = {};
+let onReady = false;
 let tgl = true;
 Audio.play = function() {
     Spectrum.play();
-
     $('#btn-stop')[0].disabled = false;
-    $('#btn-pause')[0].disabled = false;
-    $('#btn-play')[0].disabled = true;
 }
 Audio.pause = function() {
     Spectrum.pause();
-
-    $('#btn-pause')[0].disabled = true;
-    $('#btn-play')[0].disabled = false;
 }
 Audio.stop = function() {
     Spectrum.stop();
-
     $('#btn-stop')[0].disabled = true;
-    $('#btn-pause')[0].disabled = true;
-    $('#btn-play')[0].disabled = false;
+    if (!tgl) {
+        $('#btn-play').find('i').toggleClass('fa-play fa-pause');
+        tgl=!tgl;s
+    }
 }
 Audio.toggle = function() {
-    tgl?$('#btn-play').click():$('#btn-pause').click();
+    tgl?Audio.play():Audio.pause();
+    $('#btn-play').find('i').toggleClass('fa-play fa-pause');
     tgl=!tgl;
 }
 
-$('#btn-play').click(Audio.play);
-$('#btn-pause').click(Audio.pause);
+$('#btn-play').click(Audio.toggle);
 $('#btn-stop').click(Audio.stop);
-$(window).keypress(function (e) {
-  if (e.keyCode == 0 || e.keyCode == 32) {
+$(window).keydown(function (e) {
     e.preventDefault();
-    Audio.toggle();
-  }
+    if (onReady) {
+        if (e.keyCode == 0 || e.keyCode == 32) {
+            $('#btn-play').click(); }
+        else if (e.keyCode == 8 || e.keyCode == 46) {
+             delSegment($('.current')[2].innerHTML); }
+    }
 })
 
+$('#btn-add').click(function(){
+    addSegment($('.current')[2].innerHTML);
+});
 $('#btn-export').click(function(){
-    let filename = $('.current')[1].innerHTML;
+    let filename = $('.current')[2].innerHTML;
     if (filename == 'Result') {
         alert('Please select a file!');
         return;
@@ -87,12 +89,10 @@ $('#btn-export').click(function(){
     exportCSVFile(headers, results[filename].timestamp, label, filename);
 });
 
-$('#slider').change(function() {
-    Spectrum.zoom(Number(this.value));
-});
-
 Spectrum.on('ready', function() {
-   $('#btn-play')[0].disabled = false;
+    $('#btn-play')[0].disabled = false;
+    $('#btn-add')[0].disabled = false;
+    onReady = true;
 });
 
 /**
@@ -124,27 +124,27 @@ function startAnalysis() {
         event: $(".current")[1].innerHTML,
     };
     Loader.show();
-    // Loader.hide();
-    // $.getJSON('/static/assets/json/results.json', function( json ) {
-    //     // console.log(json);
-    //     ext = json.extension;
-    //     getLabel();
-    //     getDetail(json.matched_result);
-    //     updateSpectrum();
-    // });
-    uploadFile(data)
-        .then(function (response) {
-            let results = JSON.parse(response.data.results)
-            console.log(results);
-            ext = results.extension;
-            Loader.hide();
-            getLabel();
-            getDetail(results.matched_result);
-            updateSpectrum();
-        })
-        .catch(function (response) {
-            console.log(response);
-        });
+    Loader.hide();
+    $.getJSON('/static/assets/json/results.json', function( json ) {
+        // console.log(json);
+        ext = json.extension;
+        getLabel();
+        getDetail(json.matched_result);
+        updateSpectrum();
+    });
+    // uploadFile(data)
+    //     .then(function (response) {
+    //         let results = JSON.parse(response.data.results)
+    //         console.log(results);
+    //         ext = results.extension;
+    //         Loader.hide();
+    //         getLabel();
+    //         getDetail(results.matched_result);
+    //         updateSpectrum();
+    //     })
+    //     .catch(function (response) {
+    //         console.log(response);
+    //     });
 }
 
 /**
@@ -184,14 +184,14 @@ function updateSpectrum() {
     const key = $('.current')[2].innerHTML;
     Spectrum.load(`/static/assets/dataset/${dirname}/${key}${ext}`);
     Spectrum.on('ready', function() {
-        addSegments($('.current')[2].innerHTML);
+        updateSegments($('.current')[2].innerHTML);
     });
 }
 
 /**
  * ADD candidate segments for selected audio track
  */
-function addSegments(key){
+function updateSegments(key){
     // console.log('addSegment');
     $('.content-segment').each(function() {
         if (this.id == `content-segment-${key}`) {
@@ -236,6 +236,46 @@ function addSegments(key){
         });
         results[key].is_plot = true;
     }
+}
+function addSegment(key) {
+    $('.content-segment').each(function() {
+        if (this.id == `content-segment-${key}`) {
+            this.style.display = "block";
+        } else {
+            this.style.display = "none";
+        }
+    })
+    const length = 5;
+    const idx = $(`#content-segment-${key}`).children().length;
+    const duration = Spectrum.getDuration(),
+          current = Spectrum.getCurrentTime();
+    let segment = document.createElement("div"),
+        segment_drag = document.createElement("div");
+    segment.setAttribute("class", "item");
+    segment.setAttribute("id", `segment-${idx}`);
+    segment.style.display = 'block';
+    segment.style.left = (current/duration)*80 + 'vw';
+    segment.style.width = (length/duration)*80 + 'vw';
+    segment_drag.setAttribute("class", "item-drag");
+    segment.appendChild(segment_drag);
+    $(`#content-segment-${key}`).append(segment);
+
+    updateElementPosition(segment, key);
+    segment.addEventListener('click', function() {
+        let currentProgress = current/duration;
+        Spectrum.seekTo(currentProgress);
+
+        $('.item').each( function(idx) {
+            // console.log(id, idx);
+            this.classList.remove("item-focus");
+        });
+        this.classList.add("item-focus");
+        dragElement(this, key);
+        resizeElement(this, key);
+    });
+}
+function delSegment(key) {
+    $(`#content-segment-${key}`).children().remove("div.item-focus");
 }
 
 export {

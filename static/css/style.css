@@ -68,6 +68,32 @@ input[type="text"]:focus {
   box-shadow:inset skyblue 0 0 3px 2px;
 }
 
+button {
+  background: transparent;
+  border: none;
+  padding-top: 10px;
+  cursor: pointer;
+}
+button:focus {
+  outline: none !important;
+}
+.fa{
+  color: rgba(255,255,255,.3);
+  font-size: 20px;
+}
+button:not([disabled]) .fa {
+  color: rgba(255,255,255,1);
+}
+button:not([disabled]) .fa:hover {
+  color: lightblue;
+}
+button:not([disabled]) .fa-stop {
+  color: #f57d64;
+}
+button:not([disabled]) .fa-stop:hover {
+  color: #df5032;
+}
+
 /* Title */
 #section-title {
   padding: 20px 0 40px 0;

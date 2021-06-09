@@ -87,11 +87,17 @@ function updateElementPosition(elmnt, key) {
     let idx = elmnt.id.split("-")[1];
     let onset = posTotime(elmnt.style.left, results[key].duration),
         width = posTotime(elmnt.style.width, results[key].duration);
-    results[key].timestamp[idx].onset = onset.toFixed(2);
-    results[key].timestamp[idx].offset = (onset + width).toFixed(2);
+    if (idx == results[key].timestamp.length) {
+        let timeset = [onset.toFixed(2), (onset + width).toFixed(2)];
+        results[key].timestamp.push(timeset);
+    } else {
+        results[key].timestamp[idx][0] = onset.toFixed(2);
+        results[key].timestamp[idx][1] = (onset + width).toFixed(2);
+    }
 }
 
 export {
     dragElement,
     resizeElement,
+    updateElementPosition,
 };

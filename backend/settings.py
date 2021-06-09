@@ -48,10 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_mysql',
     'corsheaders',
+    'fontawesome-free',
     'rest_framework',
-
     'main',
-
 ]
 
 MIDDLEWARE = [
