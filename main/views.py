@@ -6,15 +6,16 @@ from django.core.cache import cache
 from django_redis import get_redis_connection
 import json
 import os
+import datetime
 
 from main.method import recognize
 from main.method.encoder import MyEncoder
+from main.models import Request, Userlog
 
 # Create your views here.
 class FingerprintViewSet(mixins.CreateModelMixin,
                          GenericViewSet):
     http_method_names = ["post"]
-
     def create(self, request, *args, **kwargs):
         print(f"request >> {request.data}")
         errors = {}
@@ -27,6 +28,11 @@ class FingerprintViewSet(mixins.CreateModelMixin,
         if errors:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
+        req = Request.objects.create(
+            ip_address=request.META.get('REMOTE_ADDR'),
+            query_name=request.data['event'],
+            query_dataset=f"{request.data['category']}_54"
+        )
         # file = request.data['file']
         # is_stream = True
         # params = {'thsld': 18, 'fan': 40}
@@ -41,14 +47,40 @@ class FingerprintViewSet(mixins.CreateModelMixin,
         if recordings:
             response = {}
             response['results'] = json.dumps(recordings._asdict(), cls=MyEncoder)
+            response['request_id'] = req.id
+            req.matched_result = response['results']
+            req.save()
             return Response(response, status=status.HTTP_200_OK)
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+class UserlogViewSet(mixins.CreateModelMixin,
+                     GenericViewSet):
+    http_method_names = ["post"]
+    def create(self, request, *args, **kwargs):
+        errors = {}
+        if 'request_id' not in request.data:
+            errors['request_id'] = ["request_id 不能為空"]
+        if 'filename' not in request.data:
+            errors['filename'] = ["filename 不能為空"]
+        if 'time' not in request.data:
+            errors['time'] = ["time 不能為空"]
+        if errors:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+        print(request.data)
+        req = Request.objects.filter(id=request.data['request_id']).first()
+        log = Userlog.objects.create(
+            request=req,
+            filename=request.data['filename'],
+            labeled_time=datetime.timedelta(days=-1, seconds=request.data['time']),
+        )
+        if log:
+            print(log.labeled_time)
+            return Response(status=status.HTTP_200_OK)
+
 class OptionViewSet(mixins.CreateModelMixin,
                     GenericViewSet):
     http_method_names = ["get"]
-
     def list(self, request, *args, **kwargs):
         response = {}
         default = get_redis_connection('default')

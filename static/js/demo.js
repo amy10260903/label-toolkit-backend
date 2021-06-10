@@ -1,3 +1,4 @@
+import { userReport } from '/static/api/user.js';
 import { uploadFile } from '/static/api/fingerprint.js';
 import { getOptions } from '/static/api/option.js';
 import { dragElement, resizeElement, updateElementPosition } from '/static/js/interact.js';
@@ -7,6 +8,8 @@ const results = {};
 const dirname = 'mrt_music_20210506';
 // const dirname = 'TW_TPE';
 let ext = '.wav';
+let req_id;
+let req_time;
 
 /**
  * GET options for select-list
@@ -87,6 +90,19 @@ $('#btn-export').click(function(){
     let label = $('#text-label').val();
     let headers = ['id', 'start', 'end', 'label'];
     exportCSVFile(headers, results[filename].timestamp, label, filename);
+
+    const data = {
+        request_id: req_id,
+        filename: $(".current")[2].innerHTML,
+        time: (Date.now()-req_time)/1000,
+    }
+    userReport(data)
+        .then(function (response) {
+            console.log('>> report submitted')
+        })
+        .catch(function (response) {
+            console.log(response);
+        });
 });
 
 Spectrum.on('ready', function() {
@@ -146,8 +162,8 @@ function startAnalysis() {
     uploadFile(data)
         .then(function (response) {
             let results = JSON.parse(response.data.results)
-            console.log(results);
             ext = results.extension;
+            req_id = response.data.request_id;
             Loader.hide();
             getLabel();
             getDetail(results.matched_result);
@@ -167,6 +183,7 @@ function getLabel() {
     $('#text-label').attr('value', label);
 }
 function getDetail(data) {
+    console.log(data);
     data.forEach((object) => {
         // selection menu
         let option = document.createElement("option");
@@ -195,6 +212,7 @@ function updateSpectrum() {
     const key = $('.current')[2].innerHTML;
     if (key=='Result') { return; }
 
+    req_time = Date.now();
     Loader.audio.show();
     Spectrum.load(`/static/assets/dataset/${dirname}/${key}${ext}`);
     Spectrum.on('ready', function() {
