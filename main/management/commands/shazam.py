@@ -38,7 +38,7 @@ class Command(BaseCommand):
             opt_arg = options['recognize'][1]
             cat = options['category'][0] if options['category'] else 'default'
             # params = {'thsld': 18, 'fan': 40}
-            params = {'thsld': 24, 'fan': 20}
+            params = {'thsld': 24, 'fan': 10}
 
             if source == 'file':
                 is_stream = False

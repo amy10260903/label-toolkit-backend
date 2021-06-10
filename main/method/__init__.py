@@ -8,9 +8,6 @@ import main.method.shazam_fingerprint as sf
 from main.models import \
     Recording, \
     Fingerprint
-from main.serializers import \
-    RecordingSerializer, \
-    FingerprintSerializer
 
 from main.method.settings import \
     THRESHOLD, FAN_SIZE
@@ -94,8 +91,6 @@ def update_recording_file(args):
     __load_fingerprinted_audio_hashes()
 
 def recognize(*options):
-    # tlim = [89.5, 116]
-    # return recognize_file(*options, tlim)
     return recognize_file(*options)
 
 def _fingerprint_worker(args):
