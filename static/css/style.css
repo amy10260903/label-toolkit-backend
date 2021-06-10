@@ -308,6 +308,7 @@ button:not([disabled]) .fa-stop:hover {
   width: 160px;
   font-size: 14px;
   float:left;
+  z-index: 200;
 }
 
 .custom-select select {
