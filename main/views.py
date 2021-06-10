@@ -4,9 +4,11 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from django.core.cache import cache
 from django_redis import get_redis_connection
+
+from types import SimpleNamespace
 import json
-import os
 import datetime
+import os
 
 from main.method import recognize
 from main.method.encoder import MyEncoder
@@ -50,6 +52,8 @@ class FingerprintViewSet(mixins.CreateModelMixin,
             response['request_id'] = req.id
             req.matched_result = response['results']
             req.save()
+            # tmp = json.loads(req.matched_result, object_hook=lambda d: SimpleNamespace(**d))
+            # print(tmp.event_name)
             return Response(response, status=status.HTTP_200_OK)
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -75,7 +79,7 @@ class UserlogViewSet(mixins.CreateModelMixin,
             labeled_time=datetime.timedelta(days=-1, seconds=request.data['time']),
         )
         if log:
-            print(log.labeled_time)
+            # print(log.labeled_time)
             return Response(status=status.HTTP_200_OK)
 
 class OptionViewSet(mixins.CreateModelMixin,

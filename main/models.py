@@ -33,7 +33,8 @@ class Request(models.Model):
     query_dataset = models.CharField(max_length=64, null=False, default='origin', help_text='檢索資料庫類別')
     date_created = models.DateTimeField(auto_now_add=True, help_text='建立時間')
     date_modified = models.DateTimeField(auto_now=True, help_text='更新時間')
-    matched_result = models.JSONField(null=True, help_text='配對結果')
+    # matched_result = models.JSONField(null=True, help_text='配對結果')
+    matched_result = models.TextField(null=True, help_text='配對結果')
 
 class Userlog(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
