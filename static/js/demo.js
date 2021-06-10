@@ -117,10 +117,10 @@ Loader.hide = function() {
  */
 function startAnalysis() {
     console.log('startAnalysis');
-    if ($(".current")[0].innerHTML=="Source" || $(".current")[1].innerHTML=="Sound event") {
-        alert('Please select a dataset and an event!');
-        return;
-    }
+    // if ($(".current")[0].innerHTML=="Source" || $(".current")[1].innerHTML=="Sound event") {
+    //     alert('Please select a dataset and an event!');
+    //     return;
+    // }
     const data = {
         category: $(".current")[0].innerHTML,
         // file: $("#upload-btn").prop('files')[0],
@@ -128,27 +128,27 @@ function startAnalysis() {
         event: $(".current")[1].innerHTML,
     };
     Loader.show();
-    // Loader.hide();
-    // $.getJSON('/static/assets/json/results.json', function( json ) {
-    //     // console.log(json);
-    //     ext = json.extension;
-    //     getLabel();
-    //     getDetail(json.matched_result);
-    //     updateSpectrum();
-    // });
-    uploadFile(data)
-        .then(function (response) {
-            let results = JSON.parse(response.data.results)
-            console.log(results);
-            ext = results.extension;
-            Loader.hide();
-            getLabel();
-            getDetail(results.matched_result);
-            updateSpectrum();
-        })
-        .catch(function (response) {
-            console.log(response);
-        });
+    Loader.hide();
+    $.getJSON('/static/assets/json/results.json', function( json ) {
+        // console.log(json);
+        ext = json.extension;
+        getLabel();
+        getDetail(json.matched_result);
+        updateSpectrum();
+    });
+    // uploadFile(data)
+    //     .then(function (response) {
+    //         let results = JSON.parse(response.data.results)
+    //         console.log(results);
+    //         ext = results.extension;
+    //         Loader.hide();
+    //         getLabel();
+    //         getDetail(results.matched_result);
+    //         updateSpectrum();
+    //     })
+    //     .catch(function (response) {
+    //         console.log(response);
+    //     });
 }
 
 /**
@@ -225,7 +225,13 @@ function updateSegments(key){
                 $(`#content-segment-${key}`).append(segment);
 
                 segment.addEventListener('click', function() {
-                    let currentProgress = obj[0]/duration;
+                    let currentTime = Spectrum.getCurrentTime();
+                    let currentProgress;
+                    if (Math.round(currentTime*100)/100 == obj[0]) {
+                        currentProgress = obj[1]/duration;
+                    } else {
+                        currentProgress = obj[0]/duration;
+                    }
                     Spectrum.seekTo(currentProgress);
 
                     $('.item').each( function(idx) {
