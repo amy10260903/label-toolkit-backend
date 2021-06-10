@@ -240,7 +240,7 @@ button:not([disabled]) .fa-stop:hover {
   width: 100vw;
   height: 100vh;
   overflow: auto;
-  z-index: 100;
+  z-index: 300;
   padding-top: 45vh;
   background-color: rgba(0,0,0,0.4);
 }
