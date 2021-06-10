@@ -124,10 +124,10 @@ Loader.audio.hide = function() {
  */
 function startAnalysis() {
     console.log('startAnalysis');
-    // if ($(".current")[0].innerHTML=="Source" || $(".current")[1].innerHTML=="Sound event") {
-    //     alert('Please select a dataset and an event!');
-    //     return;
-    // }
+    if ($(".current")[0].innerHTML=="Source" || $(".current")[1].innerHTML=="Sound event") {
+        alert('Please select a dataset and an event!');
+        return;
+    }
     const data = {
         category: $(".current")[0].innerHTML,
         // file: $("#upload-btn").prop('files')[0],
