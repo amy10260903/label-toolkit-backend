@@ -248,7 +248,7 @@ button:not([disabled]) .fa-stop:hover {
   color: white;
 }
 #section-loader > .container > .loader-inner.ball-beat {
-  transform: scale(0.6, 0.6);
+  transform: scale(0.5,0.5);
 }
 
 /* Customized Upload File */
