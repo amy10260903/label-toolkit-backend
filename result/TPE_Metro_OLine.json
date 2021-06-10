@@ -1,9 +1,9 @@
 {
     "event_name": "TPE_Metro_OLine",
-    "category": "record_mrt",
+    "category": "record_mrt_54",
     "extension": ".wav",
-    "fingerprint_time": 1.0396931171417236,
-    "query_time": 7.777962923049927,
+    "fingerprint_time": 0.5219111442565918,
+    "query_time": 4.297756910324097,
     "matched_result": [],
     "accuracy": 0.0
 }

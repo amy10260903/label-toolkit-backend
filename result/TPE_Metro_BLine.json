@@ -2,35 +2,35 @@
     "event_name": "TPE_Metro_BLine",
     "category": "record_mrt",
     "extension": ".wav",
-    "fingerprint_time": 1.076016902923584,
-    "query_time": 11.328961849212646,
+    "fingerprint_time": 0.8820827007293701,
+    "query_time": 3.7356767654418945,
     "matched_result": [
         {
             "recording_id": 2,
             "recording_name": "TPE_Metro_BLine_02",
-            "input_total_hashes": 31032,
+            "input_total_hashes": 6072,
             "fingerprinted_hashes_in_db": 56818,
-            "hashes_matched_in_input": 1280,
-            "input_confidence": 0.04,
-            "fingerprinted_confidence": 0.02,
+            "hashes_matched_in_input": 331,
+            "input_confidence": 0.05,
+            "fingerprinted_confidence": 0.01,
             "timestamp": [
                 [
-                    665,
+                    675,
                     1186
                 ],
                 [
-                    2236,
-                    2745
+                    2237,
+                    2741
                 ]
             ],
             "timestamp_in_seconds": [
                 [
-                    30.88,
+                    31.35,
                     55.08
                 ],
                 [
-                    103.84,
-                    127.48
+                    103.89,
+                    127.29
                 ]
             ],
             "file_sha1": "7BF8515DF1631D5EC5F7588C0740194C39583A50"
@@ -38,20 +38,20 @@
         {
             "recording_id": 1,
             "recording_name": "TPE_Metro_BLine_01",
-            "input_total_hashes": 31032,
+            "input_total_hashes": 6072,
             "fingerprinted_hashes_in_db": 39480,
-            "hashes_matched_in_input": 688,
-            "input_confidence": 0.02,
-            "fingerprinted_confidence": 0.02,
+            "hashes_matched_in_input": 183,
+            "input_confidence": 0.03,
+            "fingerprinted_confidence": 0.0,
             "timestamp": [
                 [
-                    286,
+                    287,
                     796
                 ]
             ],
             "timestamp_in_seconds": [
                 [
-                    13.28,
+                    13.33,
                     36.97
                 ]
             ],
@@ -60,98 +60,98 @@
         {
             "recording_id": 3,
             "recording_name": "TPE_Metro_BLine_03",
-            "input_total_hashes": 31032,
+            "input_total_hashes": 6072,
             "fingerprinted_hashes_in_db": 23667,
-            "hashes_matched_in_input": 632,
-            "input_confidence": 0.02,
-            "fingerprinted_confidence": 0.03,
+            "hashes_matched_in_input": 171,
+            "input_confidence": 0.03,
+            "fingerprinted_confidence": 0.01,
             "timestamp": [
                 [
-                    509,
-                    1026
+                    520,
+                    951
                 ]
             ],
             "timestamp_in_seconds": [
                 [
-                    23.64,
-                    47.65
+                    24.15,
+                    44.16
                 ]
             ],
             "file_sha1": "D1B6419A57F68EFBC28AFA7150C7FE8F376A8418"
         },
         {
-            "recording_id": 6,
-            "recording_name": "TPE_Metro_BLine_06",
-            "input_total_hashes": 31032,
-            "fingerprinted_hashes_in_db": 36422,
-            "hashes_matched_in_input": 718,
+            "recording_id": 5,
+            "recording_name": "TPE_Metro_BLine_05",
+            "input_total_hashes": 6072,
+            "fingerprinted_hashes_in_db": 20477,
+            "hashes_matched_in_input": 135,
             "input_confidence": 0.02,
-            "fingerprinted_confidence": 0.02,
+            "fingerprinted_confidence": 0.01,
             "timestamp": [
                 [
-                    303,
-                    821
+                    653,
+                    1130
                 ]
             ],
             "timestamp_in_seconds": [
                 [
-                    14.07,
-                    38.13
+                    30.33,
+                    52.48
                 ]
             ],
-            "file_sha1": "450182E7710B0DEEC92D428B754E71FFEEDA216A"
+            "file_sha1": "FACF5A3F84669EBFC7C770C7481BE7239B8A9108"
         },
         {
             "recording_id": 4,
             "recording_name": "TPE_Metro_BLine_04",
-            "input_total_hashes": 31032,
+            "input_total_hashes": 6072,
             "fingerprinted_hashes_in_db": 53793,
-            "hashes_matched_in_input": 1103,
-            "input_confidence": 0.04,
-            "fingerprinted_confidence": 0.02,
+            "hashes_matched_in_input": 279,
+            "input_confidence": 0.05,
+            "fingerprinted_confidence": 0.01,
             "timestamp": [
                 [
-                    441,
-                    958
+                    1960,
+                    2437
                 ],
                 [
-                    1960,
-                    2467
+                    441,
+                    957
                 ]
             ],
             "timestamp_in_seconds": [
                 [
-                    20.48,
-                    44.49
+                    91.02,
+                    113.17
                 ],
                 [
-                    91.02,
-                    114.57
+                    20.48,
+                    44.44
                 ]
             ],
             "file_sha1": "AB7409E91B5A1D46487C7C26035EFA6E54702849"
         },
         {
-            "recording_id": 5,
-            "recording_name": "TPE_Metro_BLine_05",
-            "input_total_hashes": 31032,
-            "fingerprinted_hashes_in_db": 20477,
-            "hashes_matched_in_input": 510,
-            "input_confidence": 0.02,
-            "fingerprinted_confidence": 0.02,
+            "recording_id": 6,
+            "recording_name": "TPE_Metro_BLine_06",
+            "input_total_hashes": 6072,
+            "fingerprinted_hashes_in_db": 36422,
+            "hashes_matched_in_input": 182,
+            "input_confidence": 0.03,
+            "fingerprinted_confidence": 0.0,
             "timestamp": [
                 [
-                    649,
-                    1164
+                    303,
+                    791
                 ]
             ],
             "timestamp_in_seconds": [
                 [
-                    30.14,
-                    54.06
+                    14.07,
+                    36.73
                 ]
             ],
-            "file_sha1": "FACF5A3F84669EBFC7C770C7481BE7239B8A9108"
+            "file_sha1": "450182E7710B0DEEC92D428B754E71FFEEDA216A"
         }
     ],
     "accuracy": 0.0
