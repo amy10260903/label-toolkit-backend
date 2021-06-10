@@ -14,11 +14,20 @@ from main.method.settings import \
 from main.method.recognizer import recognize_file
 
 songhashes_set = set()
+fingerprint_set = set()
 def __load_fingerprinted_audio_hashes(category: str='default') -> None:
     recordings = Recording.objects.filter(category=category, fingerprinted=True)
     for audio in recordings:
         file_hash = audio.file_sha1
         songhashes_set.add(file_hash)
+
+def __load_fingerprints_in_audio_file(recording_id) -> None:
+    fingerprint_set = set()
+    fingerprints = Fingerprint.objects.filter(recording=recording_id).all()
+    for fingerprint in fingerprints:
+        hsh = fingerprint.hash
+        offset = fingerprint.offset
+        fingerprint_set.add((hsh, offset))
 
 def fingerprint_directory(path: str, extensions: str, category: str, nprocesses: int=None) -> None:
     try:
@@ -79,15 +88,20 @@ def update_recording_file(args):
         }
     )
 
+    bulk = []
+    __load_fingerprints_in_audio_file(recording.id)
     for hsh, offset in hashes:
-        Fingerprint.objects.get_or_create(
-            recording=recording,
-            hash=hsh,
-            offset=offset,
-        )
-
+        if (hsh, offset) not in fingerprint_set:
+            fingerprint = Fingerprint(
+                recording=recording,
+                hash=hsh,
+                offset=offset,
+            )
+            bulk.append(fingerprint)
+    Fingerprint.objects.bulk_create(bulk)
     recording.fingerprinted = True
     recording.save()
+
     __load_fingerprinted_audio_hashes()
 
 def recognize(*options):
