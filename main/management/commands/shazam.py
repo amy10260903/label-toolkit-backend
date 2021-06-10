@@ -29,7 +29,7 @@ class Command(BaseCommand):
             self.stdout.write(f"Retreive all .{ext} files in the {dir_name} directory\n"
                               "=== Start fingerprinting ===")
             cat = options['category'][0] if options['category'] else 'default'
-            fingerprint_directory(dir_name, ext, cat)
+            fingerprint_directory(dir_name, ext, cat, 4)
 
         elif options['recognize']:
             # Recognize audio source

@@ -1,5 +1,8 @@
+import multiprocessing
+import traceback
 from glob import glob
 import os
+import sys
 
 import main.method.shazam_fingerprint as sf
 from main.models import \
@@ -14,13 +17,22 @@ from main.method.settings import \
 from main.method.recognizer import recognize_file
 
 songhashes_set = set()
-def __load_fingerprinted_audio_hashes(category: str = 'default') -> None:
+def __load_fingerprinted_audio_hashes(category: str='default') -> None:
     recordings = Recording.objects.filter(category=category, fingerprinted=True)
     for audio in recordings:
         file_hash = audio.file_sha1
         songhashes_set.add(file_hash)
 
-def fingerprint_directory(path: str, extensions: str, category: str) -> None:
+def fingerprint_directory(path: str, extensions: str, category: str, nprocesses: int=None) -> None:
+    try:
+        nprocesses = nprocesses or multiprocessing.cpu_count()
+    except NotImplementedError:
+        nprocesses = 1
+    else:
+        nprocesses = 1 if nprocesses <= 0 else nprocesses
+    pool = multiprocessing.Pool(nprocesses)
+
+    files_to_fingerprint = []
     files = glob(os.path.join(path, f"*.{extensions}"))
     __load_fingerprinted_audio_hashes(category=category)
     for f in sorted(files):
@@ -29,16 +41,31 @@ def fingerprint_directory(path: str, extensions: str, category: str) -> None:
         if sf.file_hashes(f, is_stream=False) in songhashes_set:
             print(f"{filename} already fingerprinted, continuing...")
             continue
+        files_to_fingerprint.append(f)
 
-        hashes, _, file_hash, _ = sf.fingerprint_file(f, print_output=True,
-                                                      threshold=THRESHOLD, fan_size=FAN_SIZE)
-        data = {
-            'filename': filename,
-            'file_sha1': file_hash,
-            'category': category,
-            'hashes': hashes
-        }
-        update_recording_file(data)
+    worker_input = files_to_fingerprint
+    iterator = pool.imap_unordered(_fingerprint_worker, worker_input)
+    while True:
+        try:
+            filename, hashes, file_hash = next(iterator)
+        except multiprocessing.TimeoutError:
+            continue
+        except StopIteration:
+            break
+        except Exception:
+            print("Failed fingerprinting")
+            traceback.print_exc(file=sys.stdout)
+        else:
+            data = {
+                'filename': filename,
+                'file_sha1': file_hash,
+                'category': category,
+                'hashes': hashes
+            }
+            update_recording_file(data)
+
+    pool.close()
+    pool.join()
 
 def update_recording_file(args):
     filename = args['filename']
@@ -46,42 +73,35 @@ def update_recording_file(args):
     file_hash = args['file_sha1']
     hashes = args['hashes']
 
-    recording = Recording.objects.filter(filename=filename, category=category).first()
-    if not recording:
-        data = {
-            'category': category,
-            'filename': filename,
+    recording, created = Recording.objects.get_or_create(
+        filename=filename,
+        category=category,
+        defaults={
             'file_sha1': file_hash,
             'total_hashes': len(hashes)
         }
-        serializer = RecordingSerializer(data=data, many=False)
-        if serializer.is_valid():
-            serializer.save()
-
-            recording = Recording.objects.filter(category=category, filename=filename).first()
-        else:
-            raise Exception(serializer.errors)
+    )
 
     for hsh, offset in hashes:
-        fingerprint = Fingerprint.objects.filter(recording=recording.id, hash=hsh, offset=offset).first()
-        if not fingerprint:
-            data = {
-                'recording': recording.id,
-                'hash': hsh,
-                'offset': offset
-            }
-            serializer = FingerprintSerializer(data=data, many=False)
-            if serializer.is_valid():
-                serializer.save()
+        Fingerprint.objects.get_or_create(
+            recording=recording,
+            hash=hsh,
+            offset=offset,
+        )
 
-                recording.fingerprinted = True
-                recording.save()
-            else:
-                raise Exception(serializer.errors)
-
+    recording.fingerprinted = True
+    recording.save()
     __load_fingerprinted_audio_hashes()
 
 def recognize(*options):
     # tlim = [89.5, 116]
     # return recognize_file(*options, tlim)
     return recognize_file(*options)
+
+def _fingerprint_worker(args):
+    try: file = args
+    except ValueError: pass
+
+    hashes, _, file_hash, _ = sf.fingerprint_file(file, print_output=True,
+                                                  threshold=THRESHOLD, fan_size=FAN_SIZE)
+    return os.path.basename(file), hashes, file_hash
