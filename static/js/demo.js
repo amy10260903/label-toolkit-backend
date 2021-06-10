@@ -98,7 +98,7 @@ $('#btn-export').click(function(){
     }
     userReport(data)
         .then(function (response) {
-            console.log('>> report submitted')
+            console.log('report submitted')
         })
         .catch(function (response) {
             console.log(response);
