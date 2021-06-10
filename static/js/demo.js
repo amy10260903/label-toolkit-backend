@@ -102,14 +102,21 @@ $('.loader-inner').loaders();
 
 const Loader = {};
 Loader.show = function () {
-    $('#section-loader')[0].style.display = 'block';
+    $('#loader')[0].style.display = 'block';
 }
 Loader.hide = function() {
-    $('#section-loader')[0].style.display = 'none';
+    $('#loader')[0].style.display = 'none';
     $('#selection-form')[0].style.display = 'none';
     $('#candidate')[0].style.display = 'block';
     $('#label')[0].style.display = 'block';
     $('#export')[0].style.display = 'block';
+}
+Loader.audio = {};
+Loader.audio.show = function () {
+    $('#loader-audio')[0].style.display = 'block';
+}
+Loader.audio.hide = function() {
+    $('#loader-audio')[0].style.display = 'none';
 }
 
 /**
@@ -186,9 +193,13 @@ function getDetail(data) {
  */
 function updateSpectrum() {
     const key = $('.current')[2].innerHTML;
+    if (key=='Result') { return; }
+
+    Loader.audio.show();
     Spectrum.load(`/static/assets/dataset/${dirname}/${key}${ext}`);
     Spectrum.on('ready', function() {
         updateSegments($('.current')[2].innerHTML);
+        Loader.audio.hide();
     });
 }
 

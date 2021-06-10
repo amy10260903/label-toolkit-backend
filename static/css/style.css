@@ -232,10 +232,8 @@ button:not([disabled]) .fa-stop:hover {
 }
 
 /* Loader */
-#section-loader {
-  display: none;
-}
 #section-loader > .container {
+  display: none;
   position: fixed;
   left: 0;
   top: 0;
@@ -249,7 +247,9 @@ button:not([disabled]) .fa-stop:hover {
 #section-loader > .container > p {
   color: white;
 }
-
+#section-loader > .container > .loader-inner.ball-beat {
+  transform: scale(0.6, 0.6);
+}
 
 /* Customized Upload File */
 .custom-input {
