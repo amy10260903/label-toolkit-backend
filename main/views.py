@@ -33,7 +33,7 @@ class FingerprintViewSet(mixins.CreateModelMixin,
         req = Request.objects.create(
             ip_address=request.META.get('REMOTE_ADDR'),
             query_name=request.data['event'],
-            query_dataset=f"{request.data['category']}_54"
+            query_dataset=request.data['category'],
         )
         # file = request.data['file']
         # is_stream = True
@@ -41,7 +41,7 @@ class FingerprintViewSet(mixins.CreateModelMixin,
         params = {'thsld': 24, 'fan': 20}
         is_stream = False
         file = os.path.join('static', 'assets', 'dataset', 'event', f"{request.data['event']}.mp3")
-        recordings = recognize(file, f"{request.data['category']}_54", params, is_stream)
+        recordings = recognize(file, request.data['category'], params, is_stream)
         recordings = recordings._replace(
                         matched_result=[obj._asdict() for obj in recordings.matched_result],
                         event_name=request.data['event'])
