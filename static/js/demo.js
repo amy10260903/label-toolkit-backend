@@ -140,14 +140,17 @@ Loader.audio.hide = function() {
  */
 function startAnalysis() {
     console.log('startAnalysis');
-    if ($(".current")[0].innerHTML=="Source" || $(".current")[1].innerHTML=="Sound event") {
-        alert('Please select a dataset and an event!');
+    // if ($(".current")[0].innerHTML=="Source" || $(".current")[1].innerHTML=="Sound event") {
+    //     alert('Please select a dataset and an event!');
+    //     return;
+    // }
+    if ($(".current")[0].innerHTML=="Source") {
+        alert('Please select a dataset!');
         return;
     }
     const data = {
         category: $(".current")[0].innerHTML,
-        // file: $("#upload-btn").prop('files')[0],
-        // filename: $("#upload-btn").val().split(/^.*[\\\/]/).pop().split('.').shift() || 'default',
+        file: $("#upload-btn").prop('files')[0],
         event: $(".current")[1].innerHTML,
     };
     Loader.show();
@@ -178,8 +181,8 @@ function startAnalysis() {
  * UPDATE list and show the results
  */
 function getLabel() {
-    // let label = $("#upload-btn").val().split(/^.*[\\\/]/).pop().split('.').shift() || 'sound-event-name';
-    let label = $(".current")[1].innerHTML || 'sound-event-name';
+    let label = $("#upload-btn").val().split(/^.*[\\\/]/).pop().split('.').shift() || 'sound-event-name';
+    // let label = $(".current")[1].innerHTML || 'sound-event-name';
     $('#text-label').attr('value', label);
 }
 function getDetail(data) {

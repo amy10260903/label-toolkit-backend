@@ -21,12 +21,12 @@ class FingerprintViewSet(mixins.CreateModelMixin,
     def create(self, request, *args, **kwargs):
         print(f"request >> {request.data}")
         errors = {}
-        # if 'file' not in request.data:
-        #     errors['file'] = ["沒有上傳檔案"]
+        if 'file' not in request.data:
+            errors['file'] = ["沒有上傳檔案"]
         if 'category' not in request.data:
             errors['category'] = ["category 不能為空"]
-        if 'event' not in request.data:
-            errors['event'] = ["event 不能為空"]
+        # if 'event' not in request.data:
+        #     errors['event'] = ["event 不能為空"]
         if errors:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -35,17 +35,17 @@ class FingerprintViewSet(mixins.CreateModelMixin,
             query_name=request.data['event'],
             query_dataset=request.data['category'],
         )
-        # file = request.data['file']
-        # is_stream = True
+        file = request.data['file']
+        is_stream = True
         # params = {'thsld': 18, 'fan': 40}
         params = {'thsld': 24, 'fan': 20}
-        is_stream = False
-        file = os.path.join('static', 'assets', 'dataset', 'event', f"{request.data['event']}.mp3")
+        # is_stream = False
+        # file = os.path.join('static', 'assets', 'dataset', 'event', f"{request.data['event']}.mp3")
         recordings = recognize(file, request.data['category'], params, is_stream)
         recordings = recordings._replace(
                         matched_result=[obj._asdict() for obj in recordings.matched_result],
-                        event_name=request.data['event'])
-                        # event_name=file.name)
+                        # event_name=request.data['event'])
+                        event_name=file.name)
         if recordings:
             response = {}
             response['results'] = json.dumps(recordings._asdict(), cls=MyEncoder)
