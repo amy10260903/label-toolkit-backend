@@ -1,9 +1,158 @@
 {
     "event_name": "TPE_Metro_RLine",
-    "category": "record_mrt_54",
+    "category": "record_renew",
     "extension": ".wav",
-    "fingerprint_time": 2.1291110515594482,
-    "query_time": 3.8903629779815674,
-    "matched_result": [],
+    "fingerprint_time": 0.881462812423706,
+    "query_time": 4.333254098892212,
+    "matched_result": [
+        {
+            "recording_id": 118,
+            "recording_name": "audio_02",
+            "input_total_hashes": 6198,
+            "fingerprinted_hashes_in_db": 33801,
+            "hashes_matched_in_input": 338,
+            "input_confidence": 0.05,
+            "fingerprinted_confidence": 0.01,
+            "timestamp": [
+                [
+                    850,
+                    1093
+                ],
+                [
+                    1253,
+                    1598
+                ]
+            ],
+            "timestamp_in_seconds": [
+                [
+                    39.47,
+                    50.76
+                ],
+                [
+                    58.19,
+                    74.21
+                ]
+            ],
+            "file_sha1": "9217300E8EAC42813C8A872277E03A407D0511B3"
+        },
+        {
+            "recording_id": 119,
+            "recording_name": "audio_05",
+            "input_total_hashes": 6198,
+            "fingerprinted_hashes_in_db": 16044,
+            "hashes_matched_in_input": 254,
+            "input_confidence": 0.04,
+            "fingerprinted_confidence": 0.02,
+            "timestamp": [
+                [
+                    178,
+                    559
+                ]
+            ],
+            "timestamp_in_seconds": [
+                [
+                    8.27,
+                    25.96
+                ]
+            ],
+            "file_sha1": "2903E850B9BFB2CF371EF88B5E5ADEB084BD8220"
+        },
+        {
+            "recording_id": 117,
+            "recording_name": "audio_01",
+            "input_total_hashes": 6198,
+            "fingerprinted_hashes_in_db": 22458,
+            "hashes_matched_in_input": 260,
+            "input_confidence": 0.04,
+            "fingerprinted_confidence": 0.01,
+            "timestamp": [
+                [
+                    884,
+                    1210
+                ]
+            ],
+            "timestamp_in_seconds": [
+                [
+                    41.05,
+                    56.19
+                ]
+            ],
+            "file_sha1": "587729A51F9DFC07CDDAF4764E10BCE1ED48E26A"
+        },
+        {
+            "recording_id": 123,
+            "recording_name": "audio_00",
+            "input_total_hashes": 6198,
+            "fingerprinted_hashes_in_db": 45823,
+            "hashes_matched_in_input": 483,
+            "input_confidence": 0.08,
+            "fingerprinted_confidence": 0.01,
+            "timestamp": [
+                [
+                    597,
+                    1005
+                ],
+                [
+                    3463,
+                    3844
+                ]
+            ],
+            "timestamp_in_seconds": [
+                [
+                    27.72,
+                    46.67
+                ],
+                [
+                    160.82,
+                    178.52
+                ]
+            ],
+            "file_sha1": "E19277D8EC95733C3095C4F33624DB70D8E97070"
+        },
+        {
+            "recording_id": 120,
+            "recording_name": "audio_04",
+            "input_total_hashes": 6198,
+            "fingerprinted_hashes_in_db": 26146,
+            "hashes_matched_in_input": 351,
+            "input_confidence": 0.06,
+            "fingerprinted_confidence": 0.01,
+            "timestamp": [
+                [
+                    1079,
+                    1451
+                ]
+            ],
+            "timestamp_in_seconds": [
+                [
+                    50.11,
+                    67.38
+                ]
+            ],
+            "file_sha1": "E0344ED44E8525EB174C44C64AF4E0759EC58BEB"
+        },
+        {
+            "recording_id": 116,
+            "recording_name": "audio_03",
+            "input_total_hashes": 6198,
+            "fingerprinted_hashes_in_db": 14961,
+            "hashes_matched_in_input": 179,
+            "input_confidence": 0.03,
+            "fingerprinted_confidence": 0.01,
+            "timestamp": [
+                [
+                    513,
+                    1005
+                ]
+            ],
+            "timestamp_in_seconds": [
+                [
+                    23.82,
+                    46.67
+                ]
+            ],
+            "file_sha1": "429BED3451C40E72A1A8BF594F0B367BD67966E9"
+        }
+    ],
     "accuracy": 0.0
 }

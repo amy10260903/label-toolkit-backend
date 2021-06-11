@@ -31,9 +31,14 @@ def find_and_align(hashes: List[Tuple[str, int]], category: str = 'default',
         group_list = list(group)
         counts.append((*key, len(group_list), group_list[0][-1], group_list[-1][-1]))
 
-    recording_matches = sorted([sorted(list(group), key=lambda g: g[2], reverse=True) \
-                                for key, group in groupby(counts, key=lambda count: count[0])][:topn_segment],
-                               key=lambda c: c[0][2], reverse=True)
+    recording_matches = []
+    for key, group in groupby(counts, key=lambda count: count[0]):
+        group_list = list(group)
+        recording_matches.append(sorted(group_list, key=lambda g: g[2], reverse=True)[:topn_segment])
+    recording_matches = sorted(recording_matches, key=lambda c: c[0][2], reverse=True)
+    # recording_matches = sorted([sorted(list(group), key=lambda g: g[2], reverse=True) \
+    #                             for key, group in groupby(counts, key=lambda count: count[0])][:topn_segment],
+    #                            key=lambda c: c[0][2], reverse=True)
 
     recording_result = []
     if len(recording_matches) > 0:
