@@ -5,7 +5,7 @@ import { dragElement, resizeElement, updateElementPosition } from '/static/js/in
 import { exportCSVFile } from '/static/js/export.js';
 
 const results = {};
-const dirname = 'mrt_music_20210506';
+const dirname = 'mrt_music';
 // const dirname = 'TW_TPE';
 let ext = '.wav';
 let req_id;
