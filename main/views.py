@@ -76,7 +76,7 @@ class UserlogViewSet(mixins.CreateModelMixin,
         log = Userlog.objects.create(
             request=req,
             filename=request.data['filename'],
-            labeled_time=datetime.timedelta(days=-1, seconds=request.data['time']),
+            labeled_time=request.data['time'],
         )
         if log:
             # print(log.labeled_time)

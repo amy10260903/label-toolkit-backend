@@ -40,4 +40,4 @@ class Userlog(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     request = models.ForeignKey(Request, related_name='request', default=0, on_delete=models.SET_DEFAULT, help_text='要求id')
     filename = models.CharField(null=False, max_length=250, help_text='錄音檔名')
-    labeled_time = models.DurationField(null=False, help_text='標記時間')
+    labeled_time = models.FloatField(null=False, help_text='標記時間')
