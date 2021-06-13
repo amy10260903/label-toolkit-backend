@@ -145,6 +145,8 @@ Loader.audio.hide = function() {
 function startAnalysis() {
     console.log('startAnalysis');
     if (debug) {
+        Loader.show();
+        Loader.hide();
         $.getJSON('/static/assets/json/results.json', function (json) {
             // console.log(json);
             ext = json.extension;
@@ -326,11 +328,17 @@ function addSegment(key) {
     });
 }
 function delSegment(key) {
+    let segment = $(`#content-segment-${key}`).children();
+    let total_segment = segment.length;
     let elem = $(`#content-segment-${key}`).children("div.item-focus");
     let idx = parseFloat(elem[0].id.split('-')[1]);
-    console.log(idx);
+
     results[key].timestamp.splice(idx, 1);
     elem.remove();
+
+    for (let id=idx+1; id<total_segment; id++) {
+        segment[id].id = id-1;
+    }
 }
 
 export {
