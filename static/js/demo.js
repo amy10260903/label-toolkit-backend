@@ -1,20 +1,24 @@
 import { userReport } from '/static/api/user.js';
 import { uploadFile } from '/static/api/fingerprint.js';
 import { getOptions } from '/static/api/option.js';
+import { debug } from '/static/api/urls.js';
 import { dragElement, resizeElement, updateElementPosition } from '/static/js/interact.js';
 import { exportCSVFile } from '/static/js/export.js';
 
 const results = {};
 const dirname = 'mrt_music';
-// const dirname = 'TW_TPE';
 let ext = '.wav';
 let req_id;
 let req_time;
+let ratio;
 
 /**
  * GET options for select-list
  */
 $( document ).ready(function() {
+    // if (window.screen.width > 1440) { ratio=60 }
+    // else { ratio = 80 };
+    ratio = 80;
     getOptions()
         .then(function (response) {
             let options = JSON.parse(response.data.results);
@@ -140,41 +144,46 @@ Loader.audio.hide = function() {
  */
 function startAnalysis() {
     console.log('startAnalysis');
-    // if ($(".current")[0].innerHTML=="Source" || $(".current")[1].innerHTML=="Sound event") {
-    //     alert('Please select a dataset and an event!');
-    //     return;
-    // }
-    if ($(".current")[0].innerHTML=="Source") {
-        alert('Please select a dataset!');
-        return;
-    }
-    const data = {
-        category: $(".current")[0].innerHTML,
-        file: $("#upload-btn").prop('files')[0],
-        event: $(".current")[1].innerHTML,
-    };
-    Loader.show();
-    // Loader.hide();
-    // $.getJSON('/static/assets/json/results.json', function( json ) {
-    //     // console.log(json);
-    //     ext = json.extension;
-    //     getLabel();
-    //     getDetail(json.matched_result);
-    //     updateSpectrum();
-    // });
-    uploadFile(data)
-        .then(function (response) {
-            let results = JSON.parse(response.data.results)
-            ext = results.extension;
-            req_id = response.data.request_id;
-            Loader.hide();
+    if (debug) {
+        $.getJSON('/static/assets/json/results.json', function (json) {
+            // console.log(json);
+            ext = json.extension;
             getLabel();
-            getDetail(results.matched_result);
+            getDetail(json.matched_result);
             updateSpectrum();
-        })
-        .catch(function (response) {
-            console.log(response);
         });
+    } else {
+        // if ($(".current")[0].innerHTML=="Source" || $(".current")[1].innerHTML=="Sound event") {
+        //     alert('Please select a dataset and an event!');
+        //     return;
+        // }
+        if ($(".current")[0].innerHTML=="Source") {
+            alert('Please select a dataset!');
+            return;
+        } else if ($("#upload-btn").prop('files').length == 0) {
+            alert('Please upload an event!');
+            return;
+        }
+        const data = {
+            category: $(".current")[0].innerHTML,
+            file: $("#upload-btn").prop('files')[0],
+            event: $(".current")[1].innerHTML,
+        };
+        Loader.show();
+        uploadFile(data)
+            .then(function (response) {
+                let results = JSON.parse(response.data.results)
+                ext = results.extension;
+                req_id = response.data.request_id;
+                Loader.hide();
+                getLabel();
+                getDetail(results.matched_result);
+                updateSpectrum();
+            })
+            .catch(function (response) {
+                console.log(response);
+            });
+    }
 }
 
 /**
@@ -246,11 +255,11 @@ function updateSegments(key){
                 segment.setAttribute("class", "item");
                 segment.setAttribute("id", `segment-${idx}`);
                 segment.style.display = 'block';
-                segment.style.left = (obj[0]/duration)*80 + 'vw';
+                segment.style.left = (obj[0]/duration)*ratio + 'vw';
                 if (obj[1] > duration) {
-                    segment.style.width = ((duration-obj[0])/duration)*80 + 'vw';
+                    segment.style.width = ((duration-obj[0])/duration)*ratio + 'vw';
                 } else {
-                    segment.style.width = ((obj[1]-obj[0])/duration)*80 + 'vw';
+                    segment.style.width = ((obj[1]-obj[0])/duration)*ratio + 'vw';
                 }
                 segment_drag.setAttribute("class", "item-drag");
                 segment.appendChild(segment_drag);
@@ -296,8 +305,8 @@ function addSegment(key) {
     segment.setAttribute("class", "item");
     segment.setAttribute("id", `segment-${idx}`);
     segment.style.display = 'block';
-    segment.style.left = (current/duration)*80 + 'vw';
-    segment.style.width = (length/duration)*80 + 'vw';
+    segment.style.left = (current/duration)*ratio + 'vw';
+    segment.style.width = (length/duration)*ratio + 'vw';
     segment_drag.setAttribute("class", "item-drag");
     segment.appendChild(segment_drag);
     $(`#content-segment-${key}`).append(segment);
@@ -317,7 +326,11 @@ function addSegment(key) {
     });
 }
 function delSegment(key) {
-    $(`#content-segment-${key}`).children().remove("div.item-focus");
+    let elem = $(`#content-segment-${key}`).children("div.item-focus");
+    let idx = parseFloat(elem[0].id.split('-')[1]);
+    console.log(idx);
+    results[key].timestamp.splice(idx, 1);
+    elem.remove();
 }
 
 export {
