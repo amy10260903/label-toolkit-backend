@@ -1,9 +1,8 @@
 from rest_framework import serializers
 from main.models import \
     Recording,\
-    Fingerprint
-    # RecordingWithNR,\
-    # FingerprintWithNR
+    Fingerprint,\
+    Userlog
 
 class RecordingSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,12 +14,7 @@ class FingerprintSerializer(serializers.ModelSerializer):
         model = Fingerprint
         fields = "__all__"
 
-# class RecordingWithNRSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = RecordingWithNR
-#         fields = "__all__"
-#
-# class FingerprintWithNRSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = FingerprintWithNR
-#         fields = "__all__"
+class UserlogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Userlog
+        fields = "__all__"

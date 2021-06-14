@@ -13,6 +13,7 @@ import os
 from main.method import recognize
 from main.method.encoder import MyEncoder
 from main.models import Request, Userlog
+from main.serializers import UserlogSerializer
 
 # Create your views here.
 class FingerprintViewSet(mixins.CreateModelMixin,
@@ -60,8 +61,11 @@ class FingerprintViewSet(mixins.CreateModelMixin,
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class UserlogViewSet(mixins.CreateModelMixin,
+                     mixins.RetrieveModelMixin,
+                     mixins.ListModelMixin,
                      GenericViewSet):
-    http_method_names = ["post"]
+    http_method_names = ["get", "post"]
+    serializer_class = UserlogSerializer
     def create(self, request, *args, **kwargs):
         errors = {}
         if 'request_id' not in request.data:
@@ -82,6 +86,11 @@ class UserlogViewSet(mixins.CreateModelMixin,
         if log:
             # print(log.labeled_time)
             return Response(status=status.HTTP_200_OK)
+
+    def get_queryset(self):
+        self.queryset = Userlog.objects.filter(request__id=self.request.query_params['id']).all()
+        return self.queryset
+
 
 class OptionViewSet(mixins.CreateModelMixin,
                     GenericViewSet):
