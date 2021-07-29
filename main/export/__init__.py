@@ -34,9 +34,9 @@ def exportToExcel(dirname, filename, data):
     for row in data:
         if row['id'] == 5:
             row['labeled_time'] = row['labeled_time'] - 800
-        if row['id'] in [51, 88, 99, 143]:
+        if row['id'] in [51, 88, 99, 143, 193, 206, 207, 211, 214, 215, 216, 217, 218, 219, 220, 242]:
             continue
-        if row['id'] in [11, 87, 117, 150]:
+        if row['id'] in [11, 87, 117, 150, 186, 205, 239]:
             row['filename'] = 'audio_08'
             # continue
         labeled_time = time.strftime('%M:%S', time.gmtime(row['labeled_time']))
